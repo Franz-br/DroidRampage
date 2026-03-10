@@ -7,6 +7,8 @@ import com.almasb.fxgl.texture.Texture;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
+import java.io.InputStream;
+
 public class PlayerComponent extends Component {
     private final double speed = 5.0;
 
@@ -14,11 +16,16 @@ public class PlayerComponent extends Component {
     public void onAdded() {
         // Set player texture as view
         // If you keep the image in src/main/resources/Textures/R2D2.png, load it from classpath:
-        Image img = new Image(getClass().getResourceAsStream("/Textures/R2D2.png"));
-        Texture texture = new Texture(img);
-        texture.setFitWidth(25);
-        texture.setFitHeight(40);
-        entity.getViewComponent().addChild(texture);
+        InputStream is = getClass().getResourceAsStream("/Textures/R2D2.png");
+        if (is == null) {
+            System.err.println("ERROR: Resource '/Textures/R2D2.png' not found on classpath. Make sure the file is in src/main/resources/Textures and that it's included in the build.");
+        } else {
+            Image img = new Image(is);
+            Texture texture = new Texture(img);
+            texture.setFitWidth(25);
+            texture.setFitHeight(40);
+            entity.getViewComponent().addChild(texture);
+        }
 
 
         // Register input actions for movement

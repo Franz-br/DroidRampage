@@ -11,10 +11,12 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void initSettings(GameSettings settings) {
-        settings.setWidth(600);
-        settings.setHeight(600);
+        settings.setWidth(120 * 16);
+        settings.setHeight(68 * 16);
+        settings.setFullScreenFromStart(true);
         settings.setTitle("Droid Rampage");
         settings.setVersion("0.1");
+
     }
 
     @Override
