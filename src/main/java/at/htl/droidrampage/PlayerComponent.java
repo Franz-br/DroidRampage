@@ -3,62 +3,78 @@ package at.htl.droidrampage;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.texture.Texture;
-import javafx.scene.image.Image;
+import com.almasb.fxgl.physics.PhysicsComponent;
 import javafx.scene.input.KeyCode;
 
-import java.io.InputStream;
-
 public class PlayerComponent extends Component {
-    private final double speed = 5.0;
+    private static final double NORMAL_SPEED = 250.0;
+    private static final double CHEAT_SPEED = 600.0;
+    private static final double JUMP_FORCE = 700.0;
+    private static final int MAX_JUMPS = 1;
+
+    private PhysicsComponent physics;
+    private boolean cheatMode = false;
+    private int jumpsRemaining = MAX_JUMPS;
 
     @Override
     public void onAdded() {
-        // Set player texture as view
-        // If you keep the image in src/main/resources/Textures/R2D2.png, load it from classpath:
-        InputStream is = getClass().getResourceAsStream("/Textures/R2D2.png");
-        if (is == null) {
-            System.err.println("ERROR: Resource '/Textures/R2D2.png' not found on classpath. Make sure the file is in src/main/resources/Textures and that it's included in the build.");
-        } else {
-            Image img = new Image(is);
-            Texture texture = new Texture(img);
-            texture.setFitWidth(25);
-            texture.setFitHeight(40);
-            entity.getViewComponent().addChild(texture);
-        }
+        physics = entity.getComponent(PhysicsComponent.class);
 
-
-        // Register input actions for movement
         FXGL.getInput().addAction(new UserAction("Move Right") {
             @Override
             protected void onAction() {
-                entity.translateX(speed);
-                FXGL.inc("pixelsMoved", (int) speed);
+                physics.setVelocityX(getSpeed());
+                entity.setScaleX(1);
+            }
+
+            @Override
+            protected void onActionEnd() {
+                physics.setVelocityX(0);
             }
         }, KeyCode.D);
 
         FXGL.getInput().addAction(new UserAction("Move Left") {
             @Override
             protected void onAction() {
-                entity.translateX(-speed);
-                FXGL.inc("pixelsMoved", (int) -speed);
+                physics.setVelocityX(-getSpeed());
+                entity.setScaleX(-1);
+            }
+
+            @Override
+            protected void onActionEnd() {
+                physics.setVelocityX(0);
             }
         }, KeyCode.A);
 
-        FXGL.getInput().addAction(new UserAction("Move Up") {
+        FXGL.getInput().addAction(new UserAction("Jump") {
             @Override
-            protected void onAction() {
-                entity.translateY(-speed);
-                FXGL.inc("pixelsMoved", (int) speed);
+            protected void onActionBegin() {
+                if (cheatMode || jumpsRemaining > 0) {
+                    physics.setVelocityY(-JUMP_FORCE);
+                    jumpsRemaining--;
+                }
             }
-        }, KeyCode.W);
+        }, KeyCode.SPACE);
 
-        FXGL.getInput().addAction(new UserAction("Move Down") {
+        FXGL.getInput().addAction(new UserAction("Toggle Cheat Mode") {
             @Override
-            protected void onAction() {
-                entity.translateY(speed);
-                FXGL.inc("pixelsMoved", (int) -speed);
+            protected void onActionBegin() {
+                cheatMode = !cheatMode;
+                FXGL.getNotificationService().pushNotification(
+                        cheatMode ? "CHEAT MODE: ON" : "CHEAT MODE: OFF"
+                );
             }
-        }, KeyCode.S);
+        }, KeyCode.I);
+    }
+
+    @Override
+    public void onUpdate(double tpf) {
+        if (physics.isOnGround()) {
+            jumpsRemaining = cheatMode ? Integer.MAX_VALUE : MAX_JUMPS;
+        }
+    }
+
+    private double getSpeed() {
+        return cheatMode ? CHEAT_SPEED : NORMAL_SPEED;
     }
 }

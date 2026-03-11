@@ -75,13 +75,12 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>at.htl.droidrampage/at.htl.droidrampage.GameApp</mainClass>
-                            <launcher>app</launcher>
-                            <jlinkZipName>app</jlinkZipName>
-                            <jlinkImageName>app</jlinkImageName>
-                            <noManPages>true</noManPages>
-                            <stripDebug>true</stripDebug>
-                            <noHeaderFiles>true</noHeaderFiles>
+                            <mainClass>at.htl.droidrampage.GameApp</mainClass>
+                            <options>
+                                <option>--add-opens</option><option>javafx.graphics/javafx.concurrent=ALL-UNNAMED</option>
+                                <option>--add-opens</option><option>javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</option>
+                                <option>--add-exports</option><option>javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</option>
+                            </options>
                         </configuration>
                     </execution>
                 </executions>

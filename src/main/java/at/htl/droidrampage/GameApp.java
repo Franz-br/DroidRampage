@@ -15,7 +15,7 @@ public class GameApp extends GameApplication {
         settings.setHeight(68 * 16);
         settings.setFullScreenFromStart(true);
         settings.setTitle("Droid Rampage");
-        settings.setVersion("0.1");
+        settings.setVersion("0.3");
 
     }
 
@@ -26,21 +26,18 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void initGame() {
-        entityBuilder()
-                .at(300, 300)
-                .with(new PlayerComponent())
-                .buildAndAttach();
+        getGameWorld().addEntityFactory(new PlatformFactory());
+        setLevelFromMap("TileStart.tmx"); //.tmx benutzen, nicht .tmj
+    }
+
+    @Override
+    protected void initPhysics() {
+        getPhysicsWorld().setGravity(0, 980);
     }
 
     @Override
     protected void initUI() {
-        Text textPixels = new Text();
-        textPixels.setTranslateX(50); // x = 50
-        textPixels.setTranslateY(100); // y = 100
 
-        textPixels.textProperty().bind(getWorldProperties().intProperty("pixelsMoved").asString());
-
-        getGameScene().addUINode(textPixels); // add to the scene graph
     }
 
 
