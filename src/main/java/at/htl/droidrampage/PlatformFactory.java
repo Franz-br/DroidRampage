@@ -8,6 +8,7 @@ import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.physics.box2d.collision.ContactID;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.geometry.Point2D;
@@ -33,7 +34,40 @@ public class PlatformFactory implements EntityFactory {
     public Entity newItem1(SpawnData data) {
         return FXGL.entityBuilder()
                 .from(data)
-                .viewWithBBox(new Circle(data.<Integer>get("width")/2, Color.GREEN))
+                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(
+                        data.<Integer>get("width"), data.<Integer>get("height"))))
+                .build();
+    }
+
+
+    //Texturen müssen noch gemacht werden
+    @Spawns("Credit1")//Bronze,Kupfer
+    public Entity newCredit1(SpawnData data) {
+        return FXGL.entityBuilder()
+                .from(data)
+                .type(EntityType.Coin)
+                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(
+                        data.<Integer>get("width"), data.<Integer>get("height"))))
+                .build();
+    }
+
+    @Spawns("Credit2")//Silber
+    public Entity newCredit2(SpawnData data) {
+        return FXGL.entityBuilder()
+                .from(data)
+                .type(EntityType.Coin)
+                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(
+                        data.<Integer>get("width"), data.<Integer>get("height"))))
+                .build();
+    }
+
+    @Spawns("Credit3")//Gold
+    public Entity newCredit3(SpawnData data) {
+        return FXGL.entityBuilder()
+                .from(data)
+                .type(EntityType.Coin)
+                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(
+                        data.<Integer>get("width"), data.<Integer>get("height"))))
                 .build();
     }
 

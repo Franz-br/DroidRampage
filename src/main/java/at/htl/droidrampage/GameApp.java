@@ -9,13 +9,15 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class GameApp extends GameApplication {
 
+
+
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setWidth(120 * 16);
         settings.setHeight(68 * 16);
         settings.setFullScreenFromStart(true);
         settings.setTitle("Droid Rampage");
-        settings.setVersion("0.3");
+        settings.setVersion("0.4");
 
     }
 
@@ -37,7 +39,7 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void initUI() {
-
+        //getGameScene().addUINode();
     }
 
 
