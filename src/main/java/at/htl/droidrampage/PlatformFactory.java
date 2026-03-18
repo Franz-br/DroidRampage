@@ -40,34 +40,49 @@ public class PlatformFactory implements EntityFactory {
     }
 
 
-    //Texturen müssen noch gemacht werden
-    @Spawns("Credit1")//Bronze,Kupfer
+    //32x32 groß machen
+    @Spawns("Credit1")
     public Entity newCredit1(SpawnData data) {
+        int w = data.<Integer>get("width");
+        int h = data.<Integer>get("height");
+
         return FXGL.entityBuilder()
                 .from(data)
                 .type(EntityType.Coin)
-                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(
-                        data.<Integer>get("width"), data.<Integer>get("height"))))
+                .view(FXGL.getAssetLoader().loadTexture("credit1.png", w, h))
+                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(w, h)))
+                .collidable()  // <-- replaces PhysicsComponent
+                .with("spawnName", "Credit1")
                 .build();
     }
 
-    @Spawns("Credit2")//Silber
+    @Spawns("Credit2")
     public Entity newCredit2(SpawnData data) {
+        int w = data.<Integer>get("width");
+        int h = data.<Integer>get("height");
+
         return FXGL.entityBuilder()
                 .from(data)
                 .type(EntityType.Coin)
-                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(
-                        data.<Integer>get("width"), data.<Integer>get("height"))))
+                .view(FXGL.getAssetLoader().loadTexture("credit2.png", w, h))
+                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(w, h)))
+                .collidable()  // <-- replaces PhysicsComponent
+                .with("spawnName", "Credit1")
                 .build();
     }
 
-    @Spawns("Credit3")//Gold
+    @Spawns("Credit3")
     public Entity newCredit3(SpawnData data) {
+        int w = data.<Integer>get("width");
+        int h = data.<Integer>get("height");
+
         return FXGL.entityBuilder()
                 .from(data)
                 .type(EntityType.Coin)
-                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(
-                        data.<Integer>get("width"), data.<Integer>get("height"))))
+                .view(FXGL.getAssetLoader().loadTexture("credit3.png", w, h))
+                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(w, h)))
+                .collidable()  // <-- replaces PhysicsComponent
+                .with("spawnName", "Credit1")
                 .build();
     }
 
@@ -99,12 +114,12 @@ public class PlatformFactory implements EntityFactory {
 
         return FXGL.entityBuilder()
                 .from(data)
+                .type(EntityType.Player)
                 .view(FXGL.getAssetLoader().loadTexture("R2D2.png", w, h))
-                .bbox(new HitBox("body",
-                        new Point2D(4, 0),
-                        BoundingShape.box(w - 8, h - 4)))
+                .bbox(new HitBox("body", new Point2D(4, 0), BoundingShape.box(w - 8, h - 4)))
                 .with(physics)
                 .with(new PlayerComponent())
+                .collidable()  // <-- add this
                 .build();
     }
 }
