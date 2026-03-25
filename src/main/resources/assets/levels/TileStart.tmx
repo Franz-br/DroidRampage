@@ -88,7 +88,6 @@
   <object id="12" type="plattform" x="2" y="244.333" width="449" height="33"/>
   <object id="13" type="Credit2" x="51" y="183" width="48" height="48"/>
   <object id="15" type="Boden" x="3" y="1044.5" width="1920" height="48.5"/>
-  <object id="16" name="player" type="player" x="144" y="780" width="40" height="64"/>
   <object id="20" type="plattform" x="1251.03" y="484.118" width="176" height="35.5"/>
   <object id="21" type="plattform" x="1746.5" y="738.5" width="176" height="35.5"/>
   <object id="22" type="plattform" x="1647.25" y="150.5" width="275" height="48"/>

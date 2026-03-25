@@ -2,11 +2,16 @@
 # Run this script after saving your map in Tiled!
 # Usage: .\fix-tmx.ps1
 
-$tmxPath = "src\main\resources\assets\levels\TileStart.tmx"
-$targetTmxPath = "target\classes\assets\levels\TileStart.tmx"
+# Fix both TMX files
+$tmxFiles = @(
+    "src\main\resources\assets\levels\TileStart.tmx",
+    "src\main\resources\assets\levels\Tile1.tmx"
+)
 $texturesPath = "src\main\resources\assets\textures"
 
-Write-Host "Fixing TMX file for FXGL compatibility..." -ForegroundColor Cyan
+Write-Host "Fixing TMX files for FXGL compatibility..." -ForegroundColor Cyan
+
+foreach ($tmxPath in $tmxFiles) {
 
 $content = Get-Content $tmxPath -Raw
 
@@ -52,20 +57,25 @@ foreach ($match in $matches_found) {
     }
 }
 
-# Also fix any embedded tilesets with tilecount="0" (Tiled bug)
-$content = $content -replace 'tilecount="0"', 'tilecount="4096"'
+    # Also fix any embedded tilesets with tilecount="0" (Tiled bug)
+    $content = $content -replace 'tilecount="0"', 'tilecount="4096"'
 
-# Save the fixed file
-Set-Content -Path $tmxPath -Value $content -NoNewline
+    # Save the fixed file
+    Set-Content -Path $tmxPath -Value $content -NoNewline
 
-# Also copy to target so you don't need to run mvnw compile
-if (Test-Path (Split-Path $targetTmxPath -Parent)) {
-    Copy-Item -Path $tmxPath -Destination $targetTmxPath -Force
-    Write-Host "Also copied fixed TMX to target/classes." -ForegroundColor Green
+    # Also copy to target so you don't need to run mvnw compile
+    $targetTmxPath = $tmxPath -replace 'src\\main\\resources', 'target\\classes'
+    $targetDir = Split-Path $targetTmxPath -Parent
+    if (Test-Path $targetDir) {
+        Copy-Item -Path $tmxPath -Destination $targetTmxPath -Force
+        Write-Host "  -> Also copied fixed TMX to target/classes." -ForegroundColor Green
+    }
+
+    Write-Host "  File fixed successfully!" -ForegroundColor Green
 }
 
-Write-Host "TMX file fixed successfully!" -ForegroundColor Green
 Write-Host ""
+Write-Host "All TMX files fixed successfully!" -ForegroundColor Green
 Write-Host "You can now run the game directly from IntelliJ." -ForegroundColor Cyan
 Write-Host "(If you want to use mvnw, set JAVA_HOME first:" -ForegroundColor Gray
 Write-Host '  $env:JAVA_HOME = "C:\path\to\your\jdk-25"' -ForegroundColor Gray
