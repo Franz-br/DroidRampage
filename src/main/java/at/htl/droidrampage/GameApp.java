@@ -2,6 +2,11 @@ package at.htl.droidrampage;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.SpawnData;
+import com.almasb.fxgl.entity.level.Level;
+import com.almasb.fxgl.entity.level.tiled.TMXLevelLoader;
+import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -19,7 +24,9 @@ public class GameApp extends GameApplication {
     private static final int VIEWPORT_W = 120 * 16; // 1920
     private static final int VIEWPORT_H = 68 * 16;  // 1088
 
-    // Parallax speeds
+    // TileStart is exactly one map wide: 120 tiles × 16 pixels = 1920 pixels
+    private static final double TILESTART_WORLD_WIDTH = 120 * 16.0; // 1920 -- Fehleranfällig
+
     private static final double SPEED_LAYER1 = 0.05;
     private static final double SPEED_LAYER2 = 0.25;
 
@@ -27,19 +34,17 @@ public class GameApp extends GameApplication {
     private ImageView bgLayer2a, bgLayer2b;
     private ImageView bgLayer3;
 
-    // Camera pan — acceleration based
-    private static final double CAM_ACCEL     = 30.0;  // pixels/s² ramp-up
-    private static final double CAM_MAX_SPEED = 200.0; // pixels/s cruise speed
+    private static final double CAM_ACCEL     = 15.0;
+    private static final double CAM_MAX_SPEED = 150.0;
     private double  camSpeed         = 0;
     private boolean camPanning       = false;
     private double  cameraPanTargetX = -1;
 
-    // Level tracking
-    private boolean nextLevelLoaded = false;
+    private boolean tile1Spawned = false;
+    // Trigger well before camera reaches Tile1 so tiles are ready
+    private static final double TILE1_SPAWN_TRIGGER_X = TILESTART_WORLD_WIDTH - VIEWPORT_W;
 
-    // Trigger loading Tile1 near the END of the pan (not at the same point)
-    // TileStart is 3 viewports wide; trigger at 2.5 so tiles aren't off-screen yet
-    private static final double NEXT_LEVEL_TRIGGER_X = VIEWPORT_W * 2.5;
+    private Entity player;
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -47,7 +52,7 @@ public class GameApp extends GameApplication {
         settings.setHeight(VIEWPORT_H);
         settings.setFullScreenFromStart(true);
         settings.setTitle("Droid Rampage");
-        settings.setVersion("0.6");
+        settings.setVersion("0.8");
     }
 
     @Override
@@ -56,64 +61,66 @@ public class GameApp extends GameApplication {
         vars.put("credit", 0);
     }
 
-    // Player reference to keep it alive across level transitions
-    private com.almasb.fxgl.entity.Entity player;
-
     @Override
     protected void initGame() {
         getGameWorld().addEntityFactory(new PlatformFactory());
         setLevelFromMap("TileStart.tmx");
-
         initParallaxBackground();
 
-        // Create the player AFTER loading the level so it doesn't get deleted
-        var playerSpawnData = new com.almasb.fxgl.entity.SpawnData(144, 780)
+        player = spawn("player", new SpawnData(144, 780)
                 .put("width", 40)
-                .put("height", 64);
-        player = spawn("player", playerSpawnData);
-
+                .put("height", 64));
 
         runOnce(this::startCameraPan, Duration.seconds(2));
     }
 
     private void startCameraPan() {
         double startX    = getGameScene().getViewport().getX();
-        cameraPanTargetX = startX + VIEWPORT_W * 3;
+        // Pan across TileStart + all of Tile1
+        cameraPanTargetX = TILESTART_WORLD_WIDTH + VIEWPORT_W * 3;
         camSpeed         = 0;
         camPanning       = true;
     }
 
-    private void loadNextLevel() {
-        if (nextLevelLoaded) return;
-        nextLevelLoaded = true;
+    /**
+     * Load Tile1's tile layer visuals and physics objects into the existing world
+     * at an X offset equal to TileStart's world width — no world reset.
+     */
+    private void spawnTile1() {
+        if (tile1Spawned) return;
+        tile1Spawned = true;
 
-        // Only load if player still exists
-        if (player == null) return;
+        double offsetX = TILESTART_WORLD_WIDTH;
 
-        // Save player position
-        double playerX = player.getX();
-        double playerY = player.getY();
+        // ── 1. Load the Tile1 level with TMX loader ────────────────────────────
+        try {
+            Level tile1Level = getAssetLoader().loadLevel("Tile1.tmx", new TMXLevelLoader());
 
-        // Load the new level (this removes all entities, including player)
-        setLevelFromMap("Tile1.tmx");
-
-        // Recreate the player at the saved position
-        var playerSpawnData = new com.almasb.fxgl.entity.SpawnData(playerX, playerY)
-                .put("width", 40)
-                .put("height", 64);
-        player = spawn("player", playerSpawnData);
-
-        // Safety check
-        if (player == null) {
-            System.err.println("ERROR: Failed to spawn player in Tile1!");
-            return;
+            // ── 2. Process all entities from the level ─────────────────────────
+            for (Entity e : tile1Level.getEntities()) {
+                // Tile layer entities (no physics) - add as visuals
+                if (!e.hasComponent(com.almasb.fxgl.physics.PhysicsComponent.class)) {
+                    // Position the entity at the offset
+                    e.setPosition(e.getPosition().add(offsetX, 0));
+                    getGameWorld().addEntity(e);
+                }
+                // Physics entities (platforms, obstacles) - also add with offset
+                else if (e.hasComponent(com.almasb.fxgl.physics.PhysicsComponent.class)) {
+                    // Add offset to the entity position
+                    e.setPosition(e.getPosition().add(offsetX, 0));
+                    getGameWorld().addEntity(e);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("[TILE1] Failed to load level: " + e.getMessage());
+            e.printStackTrace();
         }
 
-        // Continue camera pan - extend target by 1 more viewport width
-        // (Tile1 is same size as TileStart, so add 1920 more)
-        double currentCameraX = getGameScene().getViewport().getX();
-        cameraPanTargetX = currentCameraX + VIEWPORT_W;
-        camPanning = true;
+        System.out.println("[TILE1] Spawned Tile1 at offsetX=" + offsetX);
+    }
+
+    private void spawnBox(String type, double x, double y, int w, int h) {
+        spawn(type, new SpawnData(x, y).put("width", w).put("height", h));
     }
 
     private void initParallaxBackground() {
@@ -143,28 +150,25 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void onUpdate(double tpf) {
-        // ── Camera pan with acceleration ──────────────────────────────────────
+        // ── Camera pan ────────────────────────────────────────────────────────
         if (camPanning) {
             camSpeed = Math.min(camSpeed + CAM_ACCEL * tpf, CAM_MAX_SPEED);
-
             double currentX = getGameScene().getViewport().getX();
             double newX     = currentX + camSpeed * tpf;
-
             if (newX >= cameraPanTargetX) {
                 newX       = cameraPanTargetX;
                 camPanning = false;
             }
-
             getGameScene().getViewport().setX(newX);
         }
 
-        // ── Trigger Tile1 load partway through the first pan ──────────────────
+        // ── Spawn Tile1 ahead of camera ───────────────────────────────────────
         double cameraX = getGameScene().getViewport().getX();
-        if (!nextLevelLoaded && cameraX >= NEXT_LEVEL_TRIGGER_X) {
-            loadNextLevel();
+        if (!tile1Spawned && cameraX >= TILE1_SPAWN_TRIGGER_X) {
+            spawnTile1();
         }
 
-        // ── Parallax scroll ───────────────────────────────────────────────────
+        // ── Parallax ──────────────────────────────────────────────────────────
         scrollLayer(bgLayer1a, bgLayer1b, cameraX * SPEED_LAYER1);
         scrollLayer(bgLayer2a, bgLayer2b, cameraX * SPEED_LAYER2);
     }
@@ -178,13 +182,10 @@ public class GameApp extends GameApplication {
     @Override
     protected void initPhysics() {
         getPhysicsWorld().setGravity(0, 980);
-
-        // Register player input after physics is initialized
         registerPlayerInputs();
 
         onCollisionBegin(EntityType.Player, EntityType.Coin, (_, coin) -> {
             coin.removeFromWorld();
-
             int credits = 0;
             if (coin.getProperties().exists("spawnName")) {
                 String spawnName = coin.getProperties().getString("spawnName");
@@ -192,7 +193,6 @@ public class GameApp extends GameApplication {
                 else if (spawnName.contains("Credit2")) credits += 50;
                 else if (spawnName.contains("Credit3")) credits += 75;
             }
-
             inc("credit", credits);
         });
     }
@@ -204,67 +204,52 @@ public class GameApp extends GameApplication {
         creditText.setFill(Color.CYAN);
         creditText.setLayoutX(20);
         creditText.setLayoutY(50);
-
         getWorldProperties().intProperty("credit").addListener((_, _, newValue) ->
-                creditText.setText("Score: " + newValue)
-        );
-
+                creditText.setText("Score: " + newValue));
         getGameScene().addUINode(creditText);
     }
 
-     private void registerPlayerInputs() {
+    private void registerPlayerInputs() {
         getInput().addAction(new com.almasb.fxgl.input.UserAction("Move Right") {
-            @Override
-            protected void onAction() {
+            @Override protected void onAction() {
                 if (player != null) {
-                    var physics = player.getComponent(com.almasb.fxgl.physics.PhysicsComponent.class);
-                    physics.setVelocityX(250.0);
+                    player.getComponent(com.almasb.fxgl.physics.PhysicsComponent.class).setVelocityX(250.0);
                     player.setScaleX(1);
                 }
             }
-            @Override
-            protected void onActionEnd() {
-                if (player != null) {
-                    var physics = player.getComponent(com.almasb.fxgl.physics.PhysicsComponent.class);
-                    physics.setVelocityX(0);
-                }
+            @Override protected void onActionEnd() {
+                if (player != null)
+                    player.getComponent(com.almasb.fxgl.physics.PhysicsComponent.class).setVelocityX(0);
             }
         }, javafx.scene.input.KeyCode.D);
 
         getInput().addAction(new com.almasb.fxgl.input.UserAction("Move Left") {
-            @Override
-            protected void onAction() {
+            @Override protected void onAction() {
                 if (player != null) {
-                    var physics = player.getComponent(com.almasb.fxgl.physics.PhysicsComponent.class);
-                    physics.setVelocityX(-250.0);
+                    player.getComponent(com.almasb.fxgl.physics.PhysicsComponent.class).setVelocityX(-250.0);
                     player.setScaleX(-1);
                 }
             }
-            @Override
-            protected void onActionEnd() {
-                if (player != null) {
-                    var physics = player.getComponent(com.almasb.fxgl.physics.PhysicsComponent.class);
-                    physics.setVelocityX(0);
-                }
+            @Override protected void onActionEnd() {
+                if (player != null)
+                    player.getComponent(com.almasb.fxgl.physics.PhysicsComponent.class).setVelocityX(0);
             }
         }, javafx.scene.input.KeyCode.A);
 
         getInput().addAction(new com.almasb.fxgl.input.UserAction("Jump") {
-            @Override
-            protected void onActionBegin() {
+            @Override protected void onActionBegin() {
                 if (player != null) {
-                    var component = player.getComponent(PlayerComponent.class);
-                    if (component != null) component.jump();
+                    var c = player.getComponent(PlayerComponent.class);
+                    if (c != null) c.jump();
                 }
             }
         }, javafx.scene.input.KeyCode.SPACE);
 
         getInput().addAction(new com.almasb.fxgl.input.UserAction("Toggle Cheat Mode") {
-            @Override
-            protected void onActionBegin() {
+            @Override protected void onActionBegin() {
                 if (player != null) {
-                    var component = player.getComponent(PlayerComponent.class);
-                    if (component != null) component.toggleCheatMode();
+                    var c = player.getComponent(PlayerComponent.class);
+                    if (c != null) c.toggleCheatMode();
                 }
             }
         }, javafx.scene.input.KeyCode.I);
@@ -274,4 +259,3 @@ public class GameApp extends GameApplication {
         launch(args);
     }
 }
-
