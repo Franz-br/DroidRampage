@@ -120,7 +120,7 @@ public class PlatformFactory implements EntityFactory {
         return FXGL.entityBuilder()
                 .from(data)
                 .type(EntityType.Player)
-                .view(FXGL.getAssetLoader().loadTexture("R2D2.png", w, h))
+                .view(FXGL.getAssetLoader().loadTexture("r2d2.png", w, h))
                 .bbox(new HitBox("body", new Point2D(4, 0), BoundingShape.box(w - 8, h - 4)))
                 .with(physics)
                 .with(new PlayerComponent())

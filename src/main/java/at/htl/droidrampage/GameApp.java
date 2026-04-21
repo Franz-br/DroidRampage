@@ -6,7 +6,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.entity.level.tiled.TMXLevelLoader;
-import javafx.scene.Group;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -15,6 +15,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.Map;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
@@ -30,19 +31,24 @@ public class GameApp extends GameApplication {
     private static final double SPEED_LAYER1 = 0.05;
     private static final double SPEED_LAYER2 = 0.25;
 
+    private static final String[] TILE_VARIANTS = {"Tile1.tmx", "Tile2.tmx"};
+    private static final double TILE_SEGMENT_WIDTH = TILESTART_WORLD_WIDTH;
+
     private ImageView bgLayer1a, bgLayer1b;
     private ImageView bgLayer2a, bgLayer2b;
     private ImageView bgLayer3;
 
-    private static final double CAM_ACCEL     = 15.0;
-    private static final double CAM_MAX_SPEED = 150.0;
-    private double  camSpeed         = 0;
+    private static final double AUTO_SCROLL_START_SPEED = 15.0;
+    private static final double AUTO_SCROLL_ACCEL_PER_SEC = 10.0;
+    private static final double AUTO_SCROLL_MAX_SPEED = 240.0;
     private boolean camPanning       = false;
     private double  cameraPanTargetX = -1;
+    private double currentAutoScrollSpeed = AUTO_SCROLL_START_SPEED;
 
-    private boolean tile1Spawned = false;
-    // Trigger well before camera reaches Tile1 so tiles are ready
-    private static final double TILE1_SPAWN_TRIGGER_X = TILESTART_WORLD_WIDTH - VIEWPORT_W;
+    private double nextTileSpawnX = TILESTART_WORLD_WIDTH;
+    private String lastSpawnedTile = null;
+
+    private static final boolean START_FULLSCREEN = false; // true = fullscreen, false = maximized window
 
     private Entity player;
 
@@ -50,7 +56,13 @@ public class GameApp extends GameApplication {
     protected void initSettings(GameSettings settings) {
         settings.setWidth(VIEWPORT_W);
         settings.setHeight(VIEWPORT_H);
-        settings.setFullScreenFromStart(true);
+
+        settings.setFullScreenAllowed(true);
+        settings.setFullScreenFromStart(START_FULLSCREEN);
+
+        // useful for maximized-window mode
+        settings.setManualResizeEnabled(true);
+
         settings.setTitle("Droid Rampage");
         settings.setVersion("0.8");
     }
@@ -63,6 +75,10 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void initGame() {
+        if (!START_FULLSCREEN) {
+            Platform.runLater(() -> getPrimaryStage().setMaximized(true)); // Stage access must happen on JavaFX thread
+        }
+
         getGameWorld().addEntityFactory(new PlatformFactory());
         setLevelFromMap("TileStart.tmx");
         initParallaxBackground();
@@ -75,48 +91,76 @@ public class GameApp extends GameApplication {
     }
 
     private void startCameraPan() {
-        double startX    = getGameScene().getViewport().getX();
         // Pan across TileStart + all of Tile1
         cameraPanTargetX = TILESTART_WORLD_WIDTH + VIEWPORT_W * 3;
-        camSpeed         = 0;
         camPanning       = true;
     }
 
     /**
-     * Load Tile1's tile layer visuals and physics objects into the existing world
-     * at an X offset equal to TileStart's world width — no world reset.
+     * Load the next tile segment into the existing world at the current spawn X.
+     * The next tile is chosen randomly, but never equal to the previously spawned one.
      */
-    private void spawnTile1() {
-        if (tile1Spawned) return;
-        tile1Spawned = true;
+    private boolean spawnTiles() {
+        double offsetX = nextTileSpawnX;
 
-        double offsetX = TILESTART_WORLD_WIDTH;
+        String tileName = chooseNextTileVariant();
 
-        // ── 1. Load the Tile1 level with TMX loader ────────────────────────────
+        // ── 1. Load a random tile segment with TMX loader ─────────────────────
         try {
-            Level tile1Level = getAssetLoader().loadLevel("Tile1.tmx", new TMXLevelLoader());
+            Level tileLevel = getAssetLoader().loadLevel(tileName, new TMXLevelLoader());
 
             // ── 2. Process all entities from the level ─────────────────────────
-            for (Entity e : tile1Level.getEntities()) {
-                // Tile layer entities (no physics) - add as visuals
-                if (!e.hasComponent(com.almasb.fxgl.physics.PhysicsComponent.class)) {
-                    // Position the entity at the offset
-                    e.setPosition(e.getPosition().add(offsetX, 0));
-                    getGameWorld().addEntity(e);
-                }
-                // Physics entities (platforms, obstacles) - also add with offset
-                else if (e.hasComponent(com.almasb.fxgl.physics.PhysicsComponent.class)) {
-                    // Add offset to the entity position
-                    e.setPosition(e.getPosition().add(offsetX, 0));
-                    getGameWorld().addEntity(e);
-                }
+            for (Entity e : tileLevel.getEntities()) {
+                e.setPosition(e.getPosition().add(offsetX, 0));
+                getGameWorld().addEntity(e);
             }
+
+            lastSpawnedTile = tileName;
+            nextTileSpawnX += TILE_SEGMENT_WIDTH;
+            System.out.println("[TILE] Spawned " + tileName + " at offsetX=" + offsetX);
+            return true;
         } catch (Exception e) {
-            System.err.println("[TILE1] Failed to load level: " + e.getMessage());
+            System.err.println("[TILE] Failed to load level '" + tileName + "': " + e.getMessage());
             e.printStackTrace();
+            return false;
+        }
+    }
+
+    private String chooseNextTileVariant() {
+        int variantCount = tileVariantCount();
+
+        if (variantCount < 2) {
+            return TILE_VARIANTS[0];
         }
 
-        System.out.println("[TILE1] Spawned Tile1 at offsetX=" + offsetX);
+        if (lastSpawnedTile == null) {
+            return TILE_VARIANTS[ThreadLocalRandom.current().nextInt(variantCount)];
+        }
+
+        int lastIndex = indexOfTileVariant(lastSpawnedTile);
+        if (lastIndex < 0) {
+            return TILE_VARIANTS[ThreadLocalRandom.current().nextInt(variantCount)];
+        }
+
+        int index = ThreadLocalRandom.current().nextInt(variantCount - 1);
+        if (index >= lastIndex) {
+            index++;
+        }
+
+        return TILE_VARIANTS[index];
+    }
+
+    private int tileVariantCount() {
+        return TILE_VARIANTS.length;
+    }
+
+    private int indexOfTileVariant(String tileName) {
+        for (int i = 0; i < TILE_VARIANTS.length; i++) {
+            if (TILE_VARIANTS[i].equals(tileName)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private void spawnBox(String type, double x, double y, int w, int h) {
@@ -150,22 +194,31 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void onUpdate(double tpf) {
+        currentAutoScrollSpeed = Math.min(
+                currentAutoScrollSpeed + AUTO_SCROLL_ACCEL_PER_SEC * tpf,
+                AUTO_SCROLL_MAX_SPEED
+        );
+
         // ── Camera pan ────────────────────────────────────────────────────────
         if (camPanning) {
-            camSpeed = Math.min(camSpeed + CAM_ACCEL * tpf, CAM_MAX_SPEED);
             double currentX = getGameScene().getViewport().getX();
-            double newX     = currentX + camSpeed * tpf;
+            double newX     = currentX + currentAutoScrollSpeed * tpf;
             if (newX >= cameraPanTargetX) {
                 newX       = cameraPanTargetX;
                 camPanning = false;
             }
             getGameScene().getViewport().setX(newX);
+        } else {
+            double currentX = getGameScene().getViewport().getX();
+            getGameScene().getViewport().setX(currentX + currentAutoScrollSpeed * tpf);
         }
 
         // ── Spawn Tile1 ahead of camera ───────────────────────────────────────
         double cameraX = getGameScene().getViewport().getX();
-        if (!tile1Spawned && cameraX >= TILE1_SPAWN_TRIGGER_X) {
-            spawnTile1();
+        while (cameraX + VIEWPORT_W >= nextTileSpawnX) {
+            if (!spawnTiles()) {
+                break;
+            }
         }
 
         // ── Parallax ──────────────────────────────────────────────────────────
