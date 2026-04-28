@@ -5,8 +5,8 @@ import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
 
 public class PlayerComponent extends Component {
-    private static final double NORMAL_SPEED = 250.0;
-    private static final double CHEAT_SPEED = 600.0;
+    private static final double NORMAL_SPEED = 350.0;
+    private static final double CHEAT_SPEED = 620.0;
     private static final double JUMP_FORCE = 700.0;
     private static final int MAX_JUMPS = 1;
 

@@ -31,19 +31,26 @@ public class GameApp extends GameApplication {
     private static final double SPEED_LAYER1 = 0.05;
     private static final double SPEED_LAYER2 = 0.25;
 
-    private static final String[] TILE_VARIANTS = {"Tile1.tmx", "Tile2.tmx"};
+    private static final String[] TILE_VARIANTS = {"Tile1.tmx", "Tile2.tmx", "Tile3.tmx"};
     private static final double TILE_SEGMENT_WIDTH = TILESTART_WORLD_WIDTH;
 
     private ImageView bgLayer1a, bgLayer1b;
     private ImageView bgLayer2a, bgLayer2b;
     private ImageView bgLayer3;
 
-    private static final double AUTO_SCROLL_START_SPEED = 15.0;
-    private static final double AUTO_SCROLL_ACCEL_PER_SEC = 10.0;
-    private static final double AUTO_SCROLL_MAX_SPEED = 240.0;
+    private static final double AUTO_SCROLL_START_SPEED = 0.0;
+    private static final double AUTO_SCROLL_ACCEL_PER_SEC = 5.0;
+    private static final double AUTO_SCROLL_MAX_SPEED = 250.0;
+    private static final double DEATH_FALL_BUFFER = 120.0;
+    private static final String DEATH_REASON_VOID = "You fell into the void";
+    private static final String DEATH_REASON_CAMERA = "The camera overtook you";
+    private static final String DEATH_REASON_GENERAL = "You were killed by the Envirement";
+
     private boolean camPanning       = false;
     private double  cameraPanTargetX = -1;
     private double currentAutoScrollSpeed = AUTO_SCROLL_START_SPEED;
+    private boolean isDead = false;
+    private Pane deathOverlay;
 
     private double nextTileSpawnX = TILESTART_WORLD_WIDTH;
     private String lastSpawnedTile = null;
@@ -64,7 +71,7 @@ public class GameApp extends GameApplication {
         settings.setManualResizeEnabled(true);
 
         settings.setTitle("Droid Rampage");
-        settings.setVersion("0.8");
+        settings.setVersion("1.0");
     }
 
     @Override
@@ -75,6 +82,8 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void initGame() {
+        resetRunState();
+
         if (!START_FULLSCREEN) {
             Platform.runLater(() -> getPrimaryStage().setMaximized(true)); // Stage access must happen on JavaFX thread
         }
@@ -124,6 +133,25 @@ public class GameApp extends GameApplication {
             e.printStackTrace();
             return false;
         }
+    }
+
+
+    private void resetRunState() {
+        clearDeathScreen();
+
+        isDead = false;
+        camPanning = false;
+        cameraPanTargetX = -1;
+        currentAutoScrollSpeed = AUTO_SCROLL_START_SPEED;
+        nextTileSpawnX = TILESTART_WORLD_WIDTH;
+        lastSpawnedTile = null;
+
+        if (player != null && player.isActive()) {
+            player.removeFromWorld();
+        }
+
+
+        player = null;
     }
 
     private String chooseNextTileVariant() {
@@ -194,6 +222,10 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void onUpdate(double tpf) {
+        if (isDead) {
+            return;
+        }
+
         currentAutoScrollSpeed = Math.min(
                 currentAutoScrollSpeed + AUTO_SCROLL_ACCEL_PER_SEC * tpf,
                 AUTO_SCROLL_MAX_SPEED
@@ -213,8 +245,15 @@ public class GameApp extends GameApplication {
             getGameScene().getViewport().setX(currentX + currentAutoScrollSpeed * tpf);
         }
 
-        // ── Spawn Tile1 ahead of camera ───────────────────────────────────────
         double cameraX = getGameScene().getViewport().getX();
+
+        if (isPlayerBelowVoid() || isPlayerBehindCamera(cameraX)) {
+            String reason = isPlayerBelowVoid() ? DEATH_REASON_VOID : DEATH_REASON_CAMERA;
+            handlePlayerDeath(reason);
+            return;
+        }
+
+        // ── Spawn Tile1 ahead of camera ───────────────────────────────────────
         while (cameraX + VIEWPORT_W >= nextTileSpawnX) {
             if (!spawnTiles()) {
                 break;
@@ -224,6 +263,52 @@ public class GameApp extends GameApplication {
         // ── Parallax ──────────────────────────────────────────────────────────
         scrollLayer(bgLayer1a, bgLayer1b, cameraX * SPEED_LAYER1);
         scrollLayer(bgLayer2a, bgLayer2b, cameraX * SPEED_LAYER2);
+    }
+
+    private boolean isPlayerBelowVoid() {
+        return player != null && player.getY() > VIEWPORT_H + DEATH_FALL_BUFFER;
+    }
+
+    private boolean isPlayerBehindCamera(double cameraX) {
+        return player != null && (player.getX() + player.getWidth()) < cameraX;
+    }
+
+    private void handlePlayerDeath(String reason) {
+        if (isDead) {
+            return;
+        }
+
+        isDead = true;
+
+        if (player != null && player.isActive()) {
+            player.removeFromWorld();
+        }
+
+        showDeathScreen(reason);
+    }
+
+    private void showDeathScreen(String reason) {
+        Text deathTitle = new Text("YOU DIED");
+        deathTitle.setFont(Font.font("Arial", 84));
+        deathTitle.setFill(Color.CRIMSON);
+        deathTitle.setLayoutX(VIEWPORT_W / 2.0 - 210);
+        deathTitle.setLayoutY(VIEWPORT_H / 2.0 - 40);
+
+        Text deathReason = new Text(reason);
+        deathReason.setFont(Font.font("Arial", 34));
+        deathReason.setFill(Color.WHITE);
+        deathReason.setLayoutX(VIEWPORT_W / 2.0 - 180);
+        deathReason.setLayoutY(VIEWPORT_H / 2.0 + 10);
+
+        Text restartHint = new Text("Press R to restart");
+        restartHint.setFont(Font.font("Arial", 30));
+        restartHint.setFill(Color.LIGHTGRAY);
+        restartHint.setLayoutX(VIEWPORT_W / 2.0 - 155);
+        restartHint.setLayoutY(VIEWPORT_H / 2.0 + 70);
+
+        deathOverlay = new Pane(deathTitle, deathReason, restartHint);
+        deathOverlay.setMouseTransparent(true);
+        getGameScene().getRoot().getChildren().add(deathOverlay);
     }
 
     private void scrollLayer(ImageView a, ImageView b, double offset) {
@@ -239,6 +324,14 @@ public class GameApp extends GameApplication {
 
         onCollisionBegin(EntityType.Player, EntityType.Coin, (_, coin) -> {
             coin.removeFromWorld();
+            if (coin.getProperties().exists("spawnName")) {
+                String spawnName = coin.getProperties().getString("spawnName");
+                if ("Death".equals(spawnName)) {
+                    handlePlayerDeath(DEATH_REASON_GENERAL);
+                    return;
+                }
+            }
+
             int credits = 0;
             if (coin.getProperties().exists("spawnName")) {
                 String spawnName = coin.getProperties().getString("spawnName");
@@ -265,33 +358,35 @@ public class GameApp extends GameApplication {
     private void registerPlayerInputs() {
         getInput().addAction(new com.almasb.fxgl.input.UserAction("Move Right") {
             @Override protected void onAction() {
-                if (player != null) {
+                if (player != null && !isDead) {
                     player.getComponent(com.almasb.fxgl.physics.PhysicsComponent.class).setVelocityX(250.0);
                     player.setScaleX(1);
                 }
             }
             @Override protected void onActionEnd() {
-                if (player != null)
+                if (player != null && player.isActive() && player.hasComponent(com.almasb.fxgl.physics.PhysicsComponent.class)) {
                     player.getComponent(com.almasb.fxgl.physics.PhysicsComponent.class).setVelocityX(0);
+                }
             }
         }, javafx.scene.input.KeyCode.D);
 
         getInput().addAction(new com.almasb.fxgl.input.UserAction("Move Left") {
             @Override protected void onAction() {
-                if (player != null) {
+                if (player != null && !isDead) {
                     player.getComponent(com.almasb.fxgl.physics.PhysicsComponent.class).setVelocityX(-250.0);
                     player.setScaleX(-1);
                 }
             }
             @Override protected void onActionEnd() {
-                if (player != null)
+                if (player != null && player.isActive() && player.hasComponent(com.almasb.fxgl.physics.PhysicsComponent.class)) {
                     player.getComponent(com.almasb.fxgl.physics.PhysicsComponent.class).setVelocityX(0);
+                }
             }
         }, javafx.scene.input.KeyCode.A);
 
         getInput().addAction(new com.almasb.fxgl.input.UserAction("Jump") {
             @Override protected void onActionBegin() {
-                if (player != null) {
+                if (player != null && !isDead) {
                     var c = player.getComponent(PlayerComponent.class);
                     if (c != null) c.jump();
                 }
@@ -300,12 +395,29 @@ public class GameApp extends GameApplication {
 
         getInput().addAction(new com.almasb.fxgl.input.UserAction("Toggle Cheat Mode") {
             @Override protected void onActionBegin() {
-                if (player != null) {
+                if (player != null && !isDead) {
                     var c = player.getComponent(PlayerComponent.class);
                     if (c != null) c.toggleCheatMode();
                 }
             }
         }, javafx.scene.input.KeyCode.I);
+
+        getInput().addAction(new com.almasb.fxgl.input.UserAction("Restart") {
+            @Override protected void onActionBegin() {
+                if (isDead) {
+                    clearDeathScreen();
+                    resetRunState();
+                    getGameController().startNewGame();
+                }
+            }
+        }, javafx.scene.input.KeyCode.R);
+    }
+
+    private void clearDeathScreen() {
+        if (deathOverlay != null) {
+            getGameScene().getRoot().getChildren().remove(deathOverlay);
+            deathOverlay = null;
+        }
     }
 
     public static void main(String[] args) {

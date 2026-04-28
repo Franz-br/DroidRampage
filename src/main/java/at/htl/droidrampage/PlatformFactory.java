@@ -59,6 +59,20 @@ public class PlatformFactory implements EntityFactory {
                 .build();
     }
 
+    @Spawns("Death")
+    public Entity newDeath(SpawnData data) {
+        int w = dim(data, "width");
+        int h = dim(data, "height");
+
+        return FXGL.entityBuilder()
+                .from(data)
+                .type(EntityType.Coin)
+                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(w, h)))
+                .collidable()
+                .with("spawnName", "Death")
+                .build();
+    }
+
     @Spawns("Credit1")
     public Entity newCredit1(SpawnData data) {
         int w = dim(data, "width");
