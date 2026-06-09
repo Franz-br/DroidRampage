@@ -32,27 +32,24 @@ public class GameApp extends GameApplication {
     private static final double SPEED_LAYER2 = 0.25;
 
 
-    // ═══════════════════════════════════════════════════════════════════════════
+
     // KONFIGURATION DER TILE-GENERIERUNG
     // ═══════════════════════════════════════════════════════════════════════════
     // Liste der verfügbaren Tile-Map-Varianten für prozedurale Generierung.
     // Das Spiel wählt zufällig aus diesen Dateien, um ein endloses Level zu erstellen.
-    // Maps werden von src/main/resources/assets/levels/ geladen.
-    private static final String[] TILE_VARIANTS = {"Tile1.tmx", "Tile2.tmx", "Tile3.tmx", "Tile4.tmx", "Tile5.tmx", "Tile6.tmx"};
+    private static final String[] TILE_VARIANTS = {"Tile1.tmx", "Tile2.tmx", "Tile3.tmx", "Tile4.tmx", "Tile5.tmx", "Tile6.tmx", "TileStart.tmx"};
 
     // Breite jedes Tile-Segments in Pixeln (gleich wie TileStart.tmx: 120 Tiles × 16px = 1920px).
     // Dies ist die horizontale Distanz, die die Spielwelt voranschreitet, wenn ein neues Tile gespawnt wird.
     private static final double TILE_SEGMENT_WIDTH = TILESTART_WORLD_WIDTH;
 
-    // ═══════════════════════════════════════════════════════════════════════════
+
     // PARALLAX-HINTERGRUND-EBENEN
     // ═══════════════════════════════════════════════════════════════════════════
     // Dreilagiger Parallax-Hintergrund für Tiefeneffekt:
     // - bgLayer1a/1b (Himmel): Bewegt sich mit 5% der Kamerageschwindigkeit → erscheint am weitesten weg, am langsamsten
     // - bgLayer2a/2b (Mitte): Bewegt sich mit 25% der Kamerageschwindigkeit → erscheint im Mittelgrund
     // - bgLayer3 (Grund): Bewegt sich mit 100% der Kamerageschwindigkeit (direktes Scrollen)
-    // Jede Ebene nutzt zwei ImageViews (a/b), die nahtlos schleifen, wenn die Kamera nach rechts scrollt.
-    // Wenn View 'a' vom Bildschirm verschwindet, übernimmt 'b' ihren Platz und wir wickeln 'a' zurück zum Start.
     private ImageView bgLayer1a, bgLayer1b;
     private ImageView bgLayer2a, bgLayer2b;
     private ImageView bgLayer3;
@@ -65,8 +62,10 @@ public class GameApp extends GameApplication {
     private static final double AUTO_SCROLL_START_SPEED = 0.0;
     private static final double AUTO_SCROLL_ACCEL_PER_SEC = 5.0;
     private static final double AUTO_SCROLL_MAX_SPEED = 400.0;
-    private static final double CAMERA_PAN_FALLBACK_SPEED = 120.0; // used during the initial camera pan if auto-scroll isn't active
+    private static final double CAMERA_PAN_FALLBACK_SPEED = 0.0; // used during the initial camera pan if auto-scroll isn't active
     private static final double DEATH_FALL_BUFFER = 120.0;
+
+    //Todesnachrichten
     private static final String DEATH_REASON_VOID = "You fell into the void";
     private static final String DEATH_REASON_CAMERA = "The camera overtook you";
     private static final String DEATH_REASON_GENERAL = "You were killed by the Environment";
@@ -107,7 +106,7 @@ public class GameApp extends GameApplication {
         settings.setManualResizeEnabled(true);
 
         settings.setTitle("Droid Rampage");
-        settings.setVersion("1.0");
+        settings.setVersion("1.4");
     }
 
     @Override
@@ -147,11 +146,11 @@ public class GameApp extends GameApplication {
      * Das nächste Tile wird zufällig gewählt, ist aber nie gleich dem zuvor gespawnten.
      *
      * Ablauf:
-     * 1. Versucht mehrere Varianten zufällig aus, falls einige Maps fehlerhaft sind
+     * 1. Versucht mehrere Varianten zufällig
      * 2. Vermeidet, dass das gleiche Tile zweimal hintereinander gespawnt wird
      * 3. Lädt das TMX-Level und versetzt alle Entities um offsetX
      * 4. Addiert TILE_SEGMENT_WIDTH zu nextTileSpawnX, damit das nächste Tile weiter rechts spawnt
-     * 5. Gibt true zurück bei Erfolg, false falls alle Varianten fehlgeschlagen sind
+     * 5. Gibt true zurück bei Erfolg, false wenn etwas schiefgeganen ist
      */
     private boolean spawnTiles() {
         double offsetX = nextTileSpawnX;
@@ -164,7 +163,7 @@ public class GameApp extends GameApplication {
 
         // Versuche mehrere Varianten, falls einige Maps fehlerhaft sind
         for (int attempt = 0; attempt < variantCount; attempt++) {
-            String candidate = TILE_VARIANTS[ThreadLocalRandom.current().nextInt(variantCount)];
+            String candidate = TILE_VARIANTS[ThreadLocalRandom.current().nextInt(variantCount)]; //Lokaler Thread-Safe-Zufallsgenerator, von außen nicht beinflussbar
             // Vermeide unmittelbare Wiederholung wenn möglich
             if (lastSpawnedTile != null && candidate.equals(lastSpawnedTile) && variantCount > 1) {
                 continue;
@@ -294,6 +293,9 @@ public class GameApp extends GameApplication {
         spawn(type, new SpawnData(x, y).put("width", w).put("height", h));
     }
 
+
+    //Hintergrund
+
     private void initParallaxBackground() {
         // Lade die drei Hintergrund-Layer-Bilder
         Image imgSky = new Image(getClass().getResourceAsStream("/assets/textures/bg_layer1_sky.png"));
@@ -323,6 +325,8 @@ public class GameApp extends GameApplication {
         bgPane.setMouseTransparent(true);
         getGameScene().getRoot().getChildren().add(0, bgPane);
     }
+
+
 
     @Override
     protected void onUpdate(double tpf) {
@@ -433,9 +437,11 @@ public class GameApp extends GameApplication {
 
     /**
      * Scrolle zwei ImageViews für nahtlose Parallax-Schleife.
+     * Parallax-Schleife: Nahtlos wiederholender Hintergrund,
+     * mit verschiedenen Ebenen die unterschiedlich schnell sind
      *
      * Wie es funktioniert:
-     * - offset ist die gesamte Scroll-Distanz (z.B. cameraX * SPEED_LAYER = 5% oder 25% der Kamera-Position)
+     * - offset ist gesamte Scroll-Distanz
      * - mod ist der "Fraktional-Teil" der Scroll-Distanz: offset % VIEWPORT_W
      * - Das bedeutet: Wenn wir 2400px weit scrollten und Viewport ist 1920px breit,
      *   dann ist mod = 480px (wie weit a nach links verschoben ist)
@@ -450,6 +456,7 @@ public class GameApp extends GameApplication {
         a.setTranslateX(-mod);           // Verschiebe 'a' nach links
         b.setTranslateX(VIEWPORT_W - mod); // Positioniere 'b' direkt rechts neben 'a'
     }
+
 
     @Override
     protected void initPhysics() {
@@ -537,6 +544,17 @@ public class GameApp extends GameApplication {
                 }
             }
         }, javafx.scene.input.KeyCode.SPACE);
+
+        // Zusätzliches Binding: W soll ebenfalls springen (separate Action-Name verhindert Duplikate)
+        getInput().addAction(new com.almasb.fxgl.input.UserAction("Jump (W)") {
+            @Override protected void onActionBegin() {
+                if (player != null && !isDead) {
+                    notifyFirstInput();
+                    var c = player.getComponent(PlayerComponent.class);
+                    if (c != null) c.jump();
+                }
+            }
+        }, javafx.scene.input.KeyCode.W);
 
         getInput().addAction(new com.almasb.fxgl.input.UserAction("Toggle Cheat Mode") {
             @Override protected void onActionBegin() {

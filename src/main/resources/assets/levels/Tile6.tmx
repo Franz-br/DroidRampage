@@ -78,7 +78,7 @@
  </layer>
  <objectgroup id="2" name="Object Layer 1">
   <object id="1" type="plattform" x="524.667" y="464" width="163.333" height="30"/>
-  <object id="2" type="Boden" x="3" y="1038" width="957.167" height="50"/>
+  <object id="2" type="Boden" x="-1" y="1038" width="961.167" height="50"/>
   <object id="5" type="Boden" x="945" y="1038" width="976" height="50"/>
   <object id="6" type="Death" x="991.167" y="1023.17" width="173.667" height="15.6667"/>
   <object id="8" type="plattform" x="49.3333" y="640.667" width="158" height="32"/>

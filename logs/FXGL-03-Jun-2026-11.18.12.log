@@ -1,0 +1,520 @@
+11:12:35.673 [main                     ] DEBUG Logger               - Configured Logger
+11:12:35.722 [main                     ] DEBUG GameApplication      - Logging settings
+Title: Droid Rampage
+Version: 1.4
+Width: 1920
+Height: 1088
+Fullscreen: true
+Intro: false
+Profiling: false
+Single step:false
+App Mode: DEVELOPER
+Menu Key: ESCAPE
+Stage Style: DECORATED
+Scene Factory: class com.almasb.fxgl.app.scene.SceneFactory
+
+11:12:37.735 [JavaFX Application Thread] DEBUG FXGLApplication      - Initializing FXGL
+11:12:37.794 [JavaFX Application Thread] INFO  Engine               - FXGL-17.3 (30.03.2023 11.49) on LINUX (J:26 FX:21.0.6)
+11:12:37.804 [JavaFX Application Thread] DEBUG Engine               - JRE Vendor Name: Oracle Corporation
+11:12:37.804 [JavaFX Application Thread] DEBUG Engine               - Running on OS: Linux version 6.17.0-35-generic
+11:12:37.805 [JavaFX Application Thread] DEBUG Engine               - Architecture: amd64
+11:12:37.805 [JavaFX Application Thread] INFO  Engine               - Source code and latest versions at: https://github.com/AlmasB/FXGL
+11:12:37.815 [JavaFX Application Thread] INFO  Engine               -       Ask questions and discuss at: https://github.com/AlmasB/FXGL/discussions
+11:12:37.816 [JavaFX Application Thread] INFO  Engine               -              Join the FXGL chat at: https://gitter.im/AlmasB/FXGL
+11:12:38.532 [JavaFX Application Thread] DEBUG PrimaryStageWindow   - Creating a JavaFX scene
+11:12:38.534 [JavaFX Application Thread] DEBUG PrimaryStageWindow   - Target size > screen size
+11:12:39.105 [JavaFX Application Thread] DEBUG PrimaryStageWindow   - Target settings size: 1920.0 x 1088.0
+11:12:39.106 [JavaFX Application Thread] DEBUG PrimaryStageWindow   - Scaled scene size:    1880.0 x 1079.0
+11:12:39.107 [JavaFX Application Thread] DEBUG PrimaryStageWindow   - Scaled ratio: (0.9791666666666666, 0.9917279411764706)
+11:12:39.111 [JavaFX Application Thread] DEBUG PrimaryStageWindow   - Set initial scene to FXGLStartupScene
+11:12:39.152 [JavaFX Application Thread] DEBUG PrimaryStageWindow   - Opening main window
+11:12:39.402 [JavaFX Application Thread] DEBUG PrimaryStageWindow   - Window border size: (0.0, 35.0)
+11:12:39.403 [JavaFX Application Thread] DEBUG PrimaryStageWindow   - Scaled size: 1880.0 x 1044.0
+11:12:39.404 [JavaFX Application Thread] DEBUG PrimaryStageWindow   - Scaled ratio: (0.9791666666666666, 0.9595588235294118)
+11:12:39.404 [JavaFX Application Thread] DEBUG PrimaryStageWindow   - Scene size: 1880.0 x 1079.0
+11:12:39.405 [JavaFX Application Thread] DEBUG PrimaryStageWindow   - Stage size: 1880.0 x 1079.0
+11:12:39.439 [FXGL Background Thread 1 ] DEBUG Engine               - Initializing environment variables
+11:12:39.646 [FXGL Background Thread 1 ] DEBUG FXGLAssetLoaderServi - User app class for loading assets: class at.htl.droidrampage.GameApp
+11:12:39.647 [FXGL Background Thread 1 ] DEBUG GameApplicationServi - Applying CSS: fxgl_dark.css
+11:12:39.654 [FXGL Background Thread 1 ] DEBUG FXGLAssetLoaderServi - Loading from file system: jar:file:/home/franz/.m2/repository/com/github/almasb/fxgl/17.3/fxgl-17.3.jar!/fxglassets/ui/css/fxgl_dark.css
+11:12:39.879 [FXGL Background Thread 1 ] DEBUG GameApplicationServi - Initializing application scenes
+11:12:40.038 [FXGL Background Thread 1 ] DEBUG GameWorld            - Game world initialized
+11:12:40.206 [FXGL Background Thread 1 ] DEBUG PhysicsWorld         - Physics world initialized: appHeight=1088, physics.ppm=50.0
+11:12:40.207 [FXGL Background Thread 1 ] DEBUG PhysicsWorld         - Using strategy: BRUTE_FORCE
+11:12:40.227 [FXGL Background Thread 1 ] DEBUG GameScene            - Game scene initialized: 1920x1088
+11:12:40.280 [FXGL Background Thread 1 ] DEBUG FXGL.DefaultMenu     - createMenuBodyGameMenu()
+11:12:40.351 [FXGL Background Thread 1 ] DEBUG FXGL.DefaultMenu     - createOptionsMenu()
+11:12:40.397 [FXGL Background Thread 1 ] DEBUG FXGLAssetLoaderServi - Loading from file system: jar:file:/home/franz/.m2/repository/com/github/almasb/fxgl/17.3/fxgl-17.3.jar!/fxglassets/textures/particles/smoke.png
+11:12:40.797 [FXGL Background Thread 1 ] DEBUG FXGLAssetLoaderServi - Loading from file system: jar:file:/home/franz/.m2/repository/com/github/almasb/fxgl/17.3/fxgl-17.3.jar!/fxglassets/textures/particles/trace_horizontal.png
+11:12:40.940 [FXGL Background Thread 1 ] DEBUG GameApplicationServi - Application scenes initialized
+11:12:40.988 [FXGL Background Thread 1 ] DEBUG SystemBundleService  - Loading FXGL system data
+11:12:40.992 [FXGL Background Thread 1 ] DEBUG FileSystemAccess     - Reading from: /home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/system/fxgl.bundle
+11:12:40.998 [FXGL Background Thread 1 ] DEBUG SystemBundleService  - Bundle FXGL: {}
+11:12:40.998 [FXGL Background Thread 1 ] DEBUG UpdaterService       - Checking for updates
+11:12:41.010 [FXGL Background Thread 4 ] DEBUG FXGLApplication      - Loading fonts
+11:12:41.012 [FXGL Background Thread 4 ] DEBUG FXGLAssetLoaderServi - Loading from file system: jar:file:/home/franz/.m2/repository/com/github/almasb/fxgl/17.3/fxgl-17.3.jar!/fxglassets/ui/fonts/VarelaRound-Regular.ttf
+11:12:41.013 [FXGL Background Thread 1 ] DEBUG FXGLApplication      - Loading default localization
+11:12:41.017 [FXGL Background Thread 1 ] DEBUG FXGLAssetLoaderServi - Loading from file system: jar:file:/home/franz/.m2/repository/com/github/almasb/fxgl/17.3/fxgl-17.3.jar!/fxglassets/languages/english.lang
+11:12:41.030 [FXGL Background Thread 4 ] DEBUG FXGLAssetLoaderServi - Loading from file system: jar:file:/home/franz/.m2/repository/com/github/almasb/fxgl/17.3/fxgl-17.3.jar!/fxglassets/ui/fonts/Abel-Regular.ttf
+11:12:41.036 [FXGL Background Thread 4 ] DEBUG FXGLAssetLoaderServi - Loading from file system: jar:file:/home/franz/.m2/repository/com/github/almasb/fxgl/17.3/fxgl-17.3.jar!/fxglassets/ui/fonts/TerminalLandMono-Regular.otf
+11:12:41.042 [FXGL Background Thread 4 ] DEBUG FXGLAssetLoaderServi - Loading from file system: jar:file:/home/franz/.m2/repository/com/github/almasb/fxgl/17.3/fxgl-17.3.jar!/fxglassets/ui/fonts/Courier-Prime.ttf
+11:12:41.055 [JavaFX Application Thread] DEBUG FXGLApplication      - Registering font factories with UI factory
+11:12:41.078 [FXGL Background Thread 1 ] INFO  FXGLApplication      - FXGL initialization took: 1.638 sec
+11:12:41.081 [JavaFX Application Thread] DEBUG FXGLAssetLoaderServi - Loading from file system: jar:file:/home/franz/.m2/repository/com/github/almasb/fxgl/17.3/fxgl-17.3.jar!/fxglassets/textures/fxgl_icon.png
+11:12:41.159 [JavaFX Application Thread] DEBUG FXGLAssetLoaderServi - Loading from file system: jar:file:/home/franz/.m2/repository/com/github/almasb/fxgl/17.3/fxgl-17.3.jar!/fxglassets/textures/fxgl_default_cursor.png
+11:12:41.203 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Screenshot - CTRL+8
+11:12:41.205 [JavaFX Application Thread] DEBUG Input                - Registered new binding: System info dump - CTRL+9
+11:12:41.206 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Restart - CTRL+R
+11:12:41.208 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Toggle Debug Camera - CTRL+7
+11:12:41.217 [JavaFX Application Thread] DEBUG LoopRunner           - Starting loop
+11:12:41.218 [JavaFX Application Thread] DEBUG LoopRunner           - Initializing JavaFX AnimationTimerLoop
+11:12:41.224 [JavaFX Application Thread] DEBUG GameApplicationServi - Starting new game
+11:12:41.226 [JavaFX Application Thread] DEBUG Input                - Clearing active input actions
+11:12:41.307 [JavaFX Application Thread] DEBUG GameApplicationServi - Removing overlay from FXGLStartupScene and adding to FXGLLoadingScene
+11:12:41.309 [JavaFX Application Thread] DEBUG PrimaryStageWindow   - FXGLStartupScene -> FXGLLoadingScene
+11:12:41.309 [JavaFX Application Thread] DEBUG GameApplicationServi - Clearing previous game
+11:12:41.310 [JavaFX Application Thread] DEBUG GameScene            - Clearing game scene
+11:12:41.310 [JavaFX Application Thread] DEBUG GameWorld            - Clearing game world
+11:12:41.311 [JavaFX Application Thread] DEBUG PhysicsWorld         - Clearing physics world
+11:12:41.318 [FXGL Background Thread 1 ] DEBUG FXGLApplication      - Initializing game
+11:12:41.453 [FXGL Background Thread 1 ] WARN  TMXLevelLoader       - TiledMap generated from 1.8.2. Supported version: 1.9.0. Some features may not be parsed fully.
+11:12:41.529 [FXGL Background Thread 1 ] DEBUG TMXLevelLoader       - Parsed TiledMap: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/levels/TileStart.tmx
+11:12:41.534 [FXGL Background Thread 1 ] DEBUG TMXLevelLoader       - Creating tile layer entities
+11:12:41.542 [FXGL Background Thread 1 ] DEBUG TilesetLoader        - Loading view for layer Kachelebene 1
+11:12:41.564 [FXGL Background Thread 1 ] DEBUG TilesetLoader        - Created buffer with size 1920.0x1088.0
+11:12:41.873 [FXGL Background Thread 1 ] DEBUG TMXLevelLoader       - Creating object layer entities
+11:12:42.002 [FXGL Background Thread 1 ] DEBUG FXGLAssetLoaderServi - Loading from file system: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/textures/credit2.png
+11:12:42.391 [FXGL Background Thread 1 ] DEBUG FXGLAssetLoaderServi - Loading from file system: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/textures/credit1.png
+11:12:42.628 [FXGL Background Thread 1 ] DEBUG FXGLAssetLoaderServi - Loading from file system: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/textures/credit3.png
+11:12:42.882 [FXGL Background Thread 1 ] DEBUG GameWorld            - Clearing removable entities
+11:12:42.884 [FXGL Background Thread 1 ] DEBUG GameWorld            - Setting level: com.almasb.fxgl.entity.level.Level@1ccf5c52
+11:12:42.981 [FXGL Background Thread 2 ] INFO  UpdaterService       - Your current version:  17.3
+11:12:42.985 [FXGL Background Thread 2 ] INFO  UpdaterService       - Latest stable version: 25
+11:12:43.280 [FXGL Background Thread 1 ] DEBUG FXGLAssetLoaderServi - Loading from file system: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/textures/r2d2.png
+11:12:43.297 [FXGL Background Thread 1 ] DEBUG Input                - Registered new binding: Move Right - D
+11:12:43.297 [FXGL Background Thread 1 ] DEBUG Input                - Registered new binding: Move Left - A
+11:12:43.298 [FXGL Background Thread 1 ] DEBUG Input                - Registered new binding: Jump - Space
+11:12:43.298 [FXGL Background Thread 1 ] DEBUG Input                - Registered new binding: Jump (W) - W
+11:12:43.299 [FXGL Background Thread 1 ] DEBUG Input                - Registered new binding: Toggle Cheat Mode - I
+11:12:43.299 [FXGL Background Thread 1 ] DEBUG Input                - Registered new binding: Restart - R
+11:12:43.306 [FXGL Background Thread 1 ] INFO  FXGLApplication      - Game initialization took: 1.988 sec
+11:12:43.314 [JavaFX Application Thread] DEBUG Input                - Clearing active input actions
+11:12:43.348 [JavaFX Application Thread] DEBUG GameApplicationServi - Removing overlay from FXGLLoadingScene and adding to GameScene
+11:12:43.348 [JavaFX Application Thread] DEBUG PrimaryStageWindow   - FXGLLoadingScene -> GameScene
+11:12:43.372 [JavaFX Application Thread] WARN  TMXLevelLoader       - TiledMap generated from 1.8.2. Supported version: 1.9.0. Some features may not be parsed fully.
+11:12:43.398 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Parsed TiledMap: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/levels/Tile3.tmx
+11:12:43.398 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating tile layer entities
+11:12:43.400 [JavaFX Application Thread] DEBUG TilesetLoader        - Loading view for layer Tile Layer 1
+11:12:43.411 [JavaFX Application Thread] DEBUG TilesetLoader        - Created buffer with size 1920.0x1088.0
+11:12:43.538 [JavaFX Application Thread] WARN  TilesetLoader        - Diagonally flipped tiles are not currently supported
+11:12:43.539 [JavaFX Application Thread] WARN  TilesetLoader        - Diagonally flipped tiles are not currently supported
+11:12:43.540 [JavaFX Application Thread] WARN  TilesetLoader        - Diagonally flipped tiles are not currently supported
+11:12:43.546 [JavaFX Application Thread] WARN  TMXLevelLoader       - Parse error
+java.lang.IllegalArgumentException: Tileset for gid=7460 not found
+	at com.almasb.fxgl.entity.level.tiled.TilesetLoader.findTileset(TilesetLoader.kt:413)
+	at com.almasb.fxgl.entity.level.tiled.TilesetLoader.loadView(TilesetLoader.kt:116)
+	at com.almasb.fxgl.entity.level.tiled.TMXLevelLoader$createTileLayerEntities$1.invoke(TMXLevelLoader.kt:100)
+	at com.almasb.fxgl.entity.level.tiled.TMXLevelLoader$createTileLayerEntities$1.invoke(TMXLevelLoader.kt:89)
+	at com.almasb.fxgl.entity.level.tiled.TMXLevelLoader.createTileLayerEntities$lambda$3(TMXLevelLoader.kt:89)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1724)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:570)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:560)
+	at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:921)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:265)
+	at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:723)
+	at com.almasb.fxgl.entity.level.tiled.TMXLevelLoader.createTileLayerEntities(TMXLevelLoader.kt:117)
+	at com.almasb.fxgl.entity.level.tiled.TMXLevelLoader.load(TMXLevelLoader.kt:58)
+	at com.almasb.fxgl.app.services.FXGLAssetLoaderService.loadLevel(FXGLAssetLoaderService.kt:430)
+	at at.htl.droidrampage.GameApp.spawnTiles(GameApp.java:173)
+	at at.htl.droidrampage.GameApp.onUpdate(GameApp.java:380)
+	at com.almasb.fxgl.app.FXGLApplication$GameApplicationService.onGameUpdate(FXGLApplication.kt:421)
+	at com.almasb.fxgl.app.Engine.onGameUpdate(Engine.kt:138)
+	at com.almasb.fxgl.app.FXGLApplication.postServicesInit$lambda$7(FXGLApplication.kt:182)
+	at com.almasb.fxgl.scene.Scene.update(Scene.kt:113)
+	at com.almasb.fxgl.app.MainWindow$update$1.invoke(MainWindow.kt:115)
+	at com.almasb.fxgl.app.MainWindow$update$1.invoke(MainWindow.kt:115)
+	at com.almasb.fxgl.core.fsm.StateMachine.runOnActiveStates(StateMachine.kt:69)
+	at com.almasb.fxgl.app.MainWindow.update(MainWindow.kt:115)
+	at com.almasb.fxgl.app.FXGLApplication$GameApplicationService.onUpdate(FXGLApplication.kt:426)
+	at com.almasb.fxgl.app.Engine.loop(Engine.kt:134)
+	at com.almasb.fxgl.app.Engine.access$loop(Engine.kt:24)
+	at com.almasb.fxgl.app.Engine$loop$1.invoke(Engine.kt:28)
+	at com.almasb.fxgl.app.Engine$loop$1.invoke(Engine.kt:28)
+	at com.almasb.fxgl.app.LoopRunner.frame(LoopRunner.kt:103)
+	at com.almasb.fxgl.app.LoopRunner.access$frame(LoopRunner.kt:23)
+	at com.almasb.fxgl.app.LoopRunner$impl$2$1.onTick(LoopRunner.kt:57)
+	at com.almasb.fxgl.app.AnimationTimerLoop$timer$1.handle(LoopRunner.kt:137)
+	at javafx.animation.AnimationTimer$AnimationTimerReceiver.lambda$handle$0(AnimationTimer.java:58)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:138)
+	at javafx.animation.AnimationTimer$AnimationTimerReceiver.handle(AnimationTimer.java:57)
+	at com.sun.scenario.animation.AbstractPrimaryTimer.timePulseImpl(AbstractPrimaryTimer.java:356)
+	at com.sun.scenario.animation.AbstractPrimaryTimer$MainLoop.run(AbstractPrimaryTimer.java:266)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:588)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:572)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.pulseFromQueue(QuantumToolkit.java:565)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.lambda$runToolkit$11(QuantumToolkit.java:352)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.gtk.GtkApplication._runLoop(Native Method)
+	at com.sun.glass.ui.gtk.GtkApplication.lambda$runLoop$10(GtkApplication.java:263)
+	at java.base/java.lang.Thread.run(Thread.java:1516)
+
+11:12:43.551 [JavaFX Application Thread] WARN  TMXLevelLoader       - TiledMap generated from 1.8.2. Supported version: 1.9.0. Some features may not be parsed fully.
+11:12:43.567 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Parsed TiledMap: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/levels/Tile5.tmx
+11:12:43.567 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating tile layer entities
+11:12:43.568 [JavaFX Application Thread] DEBUG TilesetLoader        - Loading view for layer Tile Layer 1
+11:12:43.575 [JavaFX Application Thread] DEBUG TilesetLoader        - Created buffer with size 1920.0x1088.0
+11:12:43.665 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating object layer entities
+11:12:44.005 [FXGL Background Thread 3 ] DEBUG Engine               - Logging environment variables
+11:12:44.007 [FXGL Background Thread 3 ] DEBUG Engine               - achievements: []
+11:12:44.008 [FXGL Background Thread 3 ] DEBUG Engine               - actualHeight: 1044.0
+11:12:44.008 [FXGL Background Thread 3 ] DEBUG Engine               - actualHeightProperty: ReadOnlyDoubleProperty [value: 1005.0]
+11:12:44.008 [FXGL Background Thread 3 ] DEBUG Engine               - actualWidth: 1880.0
+11:12:44.009 [FXGL Background Thread 3 ] DEBUG Engine               - actualWidthProperty: ReadOnlyDoubleProperty [value: 1920.0]
+11:12:44.009 [FXGL Background Thread 3 ] DEBUG Engine               - appIcon: fxgl_icon.png
+11:12:44.009 [FXGL Background Thread 3 ] DEBUG Engine               - applicationMode: DEVELOPER
+11:12:44.009 [FXGL Background Thread 3 ] DEBUG Engine               - cSSList: [fxgl_dark.css]
+11:12:44.009 [FXGL Background Thread 3 ] DEBUG Engine               - collisionDetectionStrategy: BRUTE_FORCE
+11:12:44.009 [FXGL Background Thread 3 ] DEBUG Engine               - configClass: Optional.empty
+11:12:44.010 [FXGL Background Thread 3 ] DEBUG Engine               - credits: []
+11:12:44.011 [FXGL Background Thread 3 ] DEBUG Engine               - defaultCursor: CursorInfo(imageName=fxgl_default_cursor.png, hotspotX=7.0, hotspotY=6.0)
+11:12:44.011 [FXGL Background Thread 3 ] DEBUG Engine               - devBBoxColorProperty: ObjectProperty [value: 0xff0000ff]
+11:12:44.011 [FXGL Background Thread 3 ] DEBUG Engine               - devEnableDebugCameraProperty: BooleanProperty [value: false]
+11:12:44.012 [FXGL Background Thread 3 ] DEBUG Engine               - devSensorColorProperty: ObjectProperty [value: 0xffff00ff]
+11:12:44.012 [FXGL Background Thread 3 ] DEBUG Engine               - devShowBBoxProperty: BooleanProperty [value: false]
+11:12:44.012 [FXGL Background Thread 3 ] DEBUG Engine               - devShowPositionProperty: BooleanProperty [value: false]
+11:12:44.012 [FXGL Background Thread 3 ] DEBUG Engine               - enabledMenuItems: []
+11:12:44.013 [FXGL Background Thread 3 ] DEBUG Engine               - engineServices: [class com.almasb.fxgl.app.services.FXGLAssetLoaderService, class com.almasb.fxgl.app.FXGLApplication$GameApplicationService, class com.almasb.fxgl.app.services.FXGLDialogService, class com.almasb.fxgl.app.services.IOTaskExecutorService, class com.almasb.fxgl.io.FileSystemService, class com.almasb.fxgl.localization.LocalizationService, class com.almasb.fxgl.app.services.SystemBundleService, class com.almasb.fxgl.profile.SaveLoadService, class com.almasb.fxgl.ui.FXGLUIFactoryServiceProvider, class com.almasb.fxgl.ui.FXGLDialogFactoryServiceProvider, class com.almasb.fxgl.audio.AudioPlayer, class com.almasb.fxgl.notification.impl.NotificationServiceProvider, class com.almasb.fxgl.achievement.AchievementService, class com.almasb.fxgl.cutscene.CutsceneService, class com.almasb.fxgl.minigames.MiniGameService, class com.almasb.fxgl.net.NetService, class com.almasb.fxgl.app.services.UpdaterService, class com.almasb.fxgl.dev.DevService]
+11:12:44.013 [FXGL Background Thread 3 ] DEBUG Engine               - fontGame: Abel-Regular.ttf
+11:12:44.013 [FXGL Background Thread 3 ] DEBUG Engine               - fontMono: TerminalLandMono-Regular.otf
+11:12:44.014 [FXGL Background Thread 3 ] DEBUG Engine               - fontSizeScaleUI: 1.0
+11:12:44.014 [FXGL Background Thread 3 ] DEBUG Engine               - fontText: Courier-Prime.ttf
+11:12:44.014 [FXGL Background Thread 3 ] DEBUG Engine               - fontUI: VarelaRound-Regular.ttf
+11:12:44.014 [FXGL Background Thread 3 ] DEBUG Engine               - fullScreen: BooleanProperty [value: false]
+11:12:44.014 [FXGL Background Thread 3 ] DEBUG Engine               - gameDifficulty: MEDIUM
+11:12:44.015 [FXGL Background Thread 3 ] DEBUG Engine               - gameDifficultyProperty: ObjectProperty [value: MEDIUM]
+11:12:44.015 [FXGL Background Thread 3 ] DEBUG Engine               - globalMusicVolume: 0.5
+11:12:44.015 [FXGL Background Thread 3 ] DEBUG Engine               - globalMusicVolumeProperty: DoubleProperty [value: 0.5]
+11:12:44.015 [FXGL Background Thread 3 ] DEBUG Engine               - globalSoundVolume: 0.5
+11:12:44.016 [FXGL Background Thread 3 ] DEBUG Engine               - globalSoundVolumeProperty: DoubleProperty [value: 0.5]
+11:12:44.016 [FXGL Background Thread 3 ] DEBUG Engine               - height: 1088
+11:12:44.016 [FXGL Background Thread 3 ] DEBUG Engine               - is3D: false
+11:12:44.016 [FXGL Background Thread 3 ] DEBUG Engine               - isAndroid: false
+11:12:44.016 [FXGL Background Thread 3 ] DEBUG Engine               - isBrowser: false
+11:12:44.017 [FXGL Background Thread 3 ] DEBUG Engine               - isClickFeedbackEnabled: false
+11:12:44.017 [FXGL Background Thread 3 ] DEBUG Engine               - isCloseConfirmation: false
+11:12:44.017 [FXGL Background Thread 3 ] DEBUG Engine               - isDesktop: true
+11:12:44.017 [FXGL Background Thread 3 ] DEBUG Engine               - isDeveloperMenuEnabled: false
+11:12:44.018 [FXGL Background Thread 3 ] DEBUG Engine               - isEmbedded: false
+11:12:44.018 [FXGL Background Thread 3 ] DEBUG Engine               - isEntityPreloadEnabled: true
+11:12:44.018 [FXGL Background Thread 3 ] DEBUG Engine               - isExperimentalTiledLargeMap: false
+11:12:44.018 [FXGL Background Thread 3 ] DEBUG Engine               - isFileSystemWriteAllowed: true
+11:12:44.018 [FXGL Background Thread 3 ] DEBUG Engine               - isFullScreenAllowed: true
+11:12:44.019 [FXGL Background Thread 3 ] DEBUG Engine               - isFullScreenFromStart: false
+11:12:44.019 [FXGL Background Thread 3 ] DEBUG Engine               - isGameMenuEnabled: true
+11:12:44.019 [FXGL Background Thread 3 ] DEBUG Engine               - isIOS: false
+11:12:44.019 [FXGL Background Thread 3 ] DEBUG Engine               - isIntroEnabled: false
+11:12:44.020 [FXGL Background Thread 3 ] DEBUG Engine               - isLinux: true
+11:12:44.020 [FXGL Background Thread 3 ] DEBUG Engine               - isMac: false
+11:12:44.020 [FXGL Background Thread 3 ] DEBUG Engine               - isMainMenuEnabled: false
+11:12:44.021 [FXGL Background Thread 3 ] DEBUG Engine               - isManualResizeEnabled: true
+11:12:44.021 [FXGL Background Thread 3 ] DEBUG Engine               - isMobile: false
+11:12:44.022 [FXGL Background Thread 3 ] DEBUG Engine               - isNative: false
+11:12:44.022 [FXGL Background Thread 3 ] DEBUG Engine               - isPauseMusicWhenMinimized: true
+11:12:44.022 [FXGL Background Thread 3 ] DEBUG Engine               - isPreserveResizeRatio: false
+11:12:44.022 [FXGL Background Thread 3 ] DEBUG Engine               - isProfilingEnabled: false
+11:12:44.023 [FXGL Background Thread 3 ] DEBUG Engine               - isScaleAffectedOnResize: true
+11:12:44.023 [FXGL Background Thread 3 ] DEBUG Engine               - isSingleStep: false
+11:12:44.023 [FXGL Background Thread 3 ] DEBUG Engine               - isUserProfileEnabled: false
+11:12:44.023 [FXGL Background Thread 3 ] DEBUG Engine               - isWindows: false
+11:12:44.024 [FXGL Background Thread 3 ] DEBUG Engine               - language: ObjectProperty [value: ENGLISH]
+11:12:44.024 [FXGL Background Thread 3 ] DEBUG Engine               - menuKey: ESCAPE
+11:12:44.025 [FXGL Background Thread 3 ] DEBUG Engine               - mouseSensitivity: 0.2
+11:12:44.025 [FXGL Background Thread 3 ] DEBUG Engine               - notificationViewClass: class com.almasb.fxgl.notification.view.XboxNotificationView
+11:12:44.025 [FXGL Background Thread 3 ] DEBUG Engine               - pixelsPerMeter: 50.0
+11:12:44.026 [FXGL Background Thread 3 ] DEBUG Engine               - platform: LINUX
+11:12:44.026 [FXGL Background Thread 3 ] DEBUG Engine               - prefHeightProperty: ReadOnlyDoubleProperty [value: 1088.0]
+11:12:44.026 [FXGL Background Thread 3 ] DEBUG Engine               - prefWidthProperty: ReadOnlyDoubleProperty [value: 1920.0]
+11:12:44.027 [FXGL Background Thread 3 ] DEBUG Engine               - profileDir: profiles/
+11:12:44.027 [FXGL Background Thread 3 ] DEBUG Engine               - profileName: StringProperty [value: DEFAULT]
+11:12:44.027 [FXGL Background Thread 3 ] DEBUG Engine               - randomSeed: -1
+11:12:44.028 [FXGL Background Thread 3 ] DEBUG Engine               - runtimeInfo: RuntimeInfo(platform=LINUX, version=17.3, build=30.03.2023 11.49)
+11:12:44.029 [FXGL Background Thread 3 ] DEBUG Engine               - saveFileExt: sav
+11:12:44.029 [FXGL Background Thread 3 ] DEBUG Engine               - scaledHeightProp$fxgl: DoubleProperty [bound, value: 1005.0]
+11:12:44.030 [FXGL Background Thread 3 ] DEBUG Engine               - scaledWidthProp$fxgl: DoubleProperty [bound, value: 1920.0]
+11:12:44.030 [FXGL Background Thread 3 ] DEBUG Engine               - sceneFactory: com.almasb.fxgl.app.scene.SceneFactory@234a6a30
+11:12:44.030 [FXGL Background Thread 3 ] DEBUG Engine               - secondsIn24h: 60
+11:12:44.030 [FXGL Background Thread 3 ] DEBUG Engine               - soundMenuBack: menu/back.wav
+11:12:44.030 [FXGL Background Thread 3 ] DEBUG Engine               - soundMenuPress: menu/press.wav
+11:12:44.031 [FXGL Background Thread 3 ] DEBUG Engine               - soundMenuSelect: menu/select.wav
+11:12:44.031 [FXGL Background Thread 3 ] DEBUG Engine               - soundNotification: core/notification.wav
+11:12:44.031 [FXGL Background Thread 3 ] DEBUG Engine               - stageStyle: DECORATED
+11:12:44.031 [FXGL Background Thread 3 ] DEBUG Engine               - supportedLanguages: [ENGLISH, FRENCH, GERMAN, HUNGARIAN, RUSSIAN]
+11:12:44.031 [FXGL Background Thread 3 ] DEBUG Engine               - ticksPerSecond: -1
+11:12:44.031 [FXGL Background Thread 3 ] DEBUG Engine               - title: Droid Rampage
+11:12:44.032 [FXGL Background Thread 3 ] DEBUG Engine               - urlGithub: https://github.com/AlmasB/FXGL
+11:12:44.032 [FXGL Background Thread 3 ] DEBUG Engine               - urlLeaderboard: http://fxgl-top.herokuapp.com/
+11:12:44.032 [FXGL Background Thread 3 ] DEBUG Engine               - urlPOM: https://raw.githubusercontent.com/AlmasB/FXGL/release/README.md
+11:12:44.032 [FXGL Background Thread 3 ] DEBUG Engine               - userAppClass: class at.htl.droidrampage.GameApp
+11:12:44.032 [FXGL Background Thread 3 ] DEBUG Engine               - version: 1.4
+11:12:44.032 [FXGL Background Thread 3 ] DEBUG Engine               - versionCheckDays: 7
+11:12:44.032 [FXGL Background Thread 3 ] DEBUG Engine               - width: 1920
+11:12:44.032 [FXGL Background Thread 3 ] DEBUG Engine               - Logging services
+11:12:44.033 [FXGL Background Thread 3 ] DEBUG Engine               - class com.almasb.fxgl.app.services.FXGLAssetLoaderService
+11:12:44.033 [FXGL Background Thread 3 ] DEBUG Engine               - class com.almasb.fxgl.app.FXGLApplication$GameApplicationService
+11:12:44.033 [FXGL Background Thread 3 ] DEBUG Engine               - class com.almasb.fxgl.app.services.FXGLDialogService
+11:12:44.033 [FXGL Background Thread 3 ] DEBUG Engine               - class com.almasb.fxgl.app.services.IOTaskExecutorService
+11:12:44.033 [FXGL Background Thread 3 ] DEBUG Engine               - class com.almasb.fxgl.io.FileSystemService
+11:12:44.033 [FXGL Background Thread 3 ] DEBUG Engine               - class com.almasb.fxgl.localization.LocalizationService
+11:12:44.033 [FXGL Background Thread 3 ] DEBUG Engine               - class com.almasb.fxgl.app.services.SystemBundleService
+11:12:44.033 [FXGL Background Thread 3 ] DEBUG Engine               - class com.almasb.fxgl.profile.SaveLoadService
+11:12:44.034 [FXGL Background Thread 3 ] DEBUG Engine               - class com.almasb.fxgl.ui.FXGLUIFactoryServiceProvider
+11:12:44.034 [FXGL Background Thread 3 ] DEBUG Engine               - class com.almasb.fxgl.ui.FXGLDialogFactoryServiceProvider
+11:12:44.034 [FXGL Background Thread 3 ] DEBUG Engine               - class com.almasb.fxgl.audio.AudioPlayer
+11:12:44.034 [FXGL Background Thread 3 ] DEBUG Engine               - class com.almasb.fxgl.notification.impl.NotificationServiceProvider
+11:12:44.034 [FXGL Background Thread 3 ] DEBUG Engine               - class com.almasb.fxgl.achievement.AchievementService
+11:12:44.035 [FXGL Background Thread 3 ] DEBUG Engine               - class com.almasb.fxgl.cutscene.CutsceneService
+11:12:44.036 [FXGL Background Thread 3 ] DEBUG Engine               - class com.almasb.fxgl.minigames.MiniGameService
+11:12:44.036 [FXGL Background Thread 3 ] DEBUG Engine               - class com.almasb.fxgl.net.NetService
+11:12:44.036 [FXGL Background Thread 3 ] DEBUG Engine               - class com.almasb.fxgl.app.services.UpdaterService
+11:12:44.037 [FXGL Background Thread 3 ] DEBUG Engine               - class com.almasb.fxgl.dev.DevService
+11:13:10.287 [JavaFX Application Thread] WARN  TMXLevelLoader       - TiledMap generated from 1.8.2. Supported version: 1.9.0. Some features may not be parsed fully.
+11:13:10.311 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Parsed TiledMap: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/levels/Tile1.tmx
+11:13:10.311 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating tile layer entities
+11:13:10.313 [JavaFX Application Thread] DEBUG TilesetLoader        - Loading view for layer Kachelebene 1
+11:13:10.327 [JavaFX Application Thread] DEBUG TilesetLoader        - Created buffer with size 1920.0x1088.0
+11:13:10.453 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating object layer entities
+11:13:21.800 [JavaFX Application Thread] WARN  TMXLevelLoader       - TiledMap generated from 1.8.2. Supported version: 1.9.0. Some features may not be parsed fully.
+11:13:21.821 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Parsed TiledMap: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/levels/TileStart.tmx
+11:13:21.822 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating tile layer entities
+11:13:21.823 [JavaFX Application Thread] DEBUG TilesetLoader        - Loading view for layer Kachelebene 1
+11:13:21.842 [JavaFX Application Thread] DEBUG TilesetLoader        - Created buffer with size 1920.0x1088.0
+11:13:21.947 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating object layer entities
+11:13:30.503 [JavaFX Application Thread] WARN  TMXLevelLoader       - TiledMap generated from 1.8.2. Supported version: 1.9.0. Some features may not be parsed fully.
+11:13:30.522 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Parsed TiledMap: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/levels/Tile2.tmx
+11:13:30.522 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating tile layer entities
+11:13:30.523 [JavaFX Application Thread] DEBUG TilesetLoader        - Loading view for layer Tile Layer 1
+11:13:30.533 [JavaFX Application Thread] DEBUG TilesetLoader        - Created buffer with size 1920.0x1088.0
+11:13:30.640 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating object layer entities
+11:13:37.844 [JavaFX Application Thread] WARN  TMXLevelLoader       - TiledMap generated from 1.8.2. Supported version: 1.9.0. Some features may not be parsed fully.
+11:13:37.858 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Parsed TiledMap: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/levels/Tile5.tmx
+11:13:37.858 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating tile layer entities
+11:13:37.859 [JavaFX Application Thread] DEBUG TilesetLoader        - Loading view for layer Tile Layer 1
+11:13:37.869 [JavaFX Application Thread] DEBUG TilesetLoader        - Created buffer with size 1920.0x1088.0
+11:13:37.975 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating object layer entities
+11:13:44.480 [JavaFX Application Thread] WARN  TMXLevelLoader       - TiledMap generated from 1.8.2. Supported version: 1.9.0. Some features may not be parsed fully.
+11:13:44.495 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Parsed TiledMap: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/levels/Tile4.tmx
+11:13:44.495 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating tile layer entities
+11:13:44.496 [JavaFX Application Thread] DEBUG TilesetLoader        - Loading view for layer Tile Layer 1
+11:13:44.498 [JavaFX Application Thread] DEBUG TilesetLoader        - Created buffer with size 1920.0x1088.0
+11:13:44.609 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating object layer entities
+11:13:50.358 [JavaFX Application Thread] WARN  TMXLevelLoader       - TiledMap generated from 1.8.2. Supported version: 1.9.0. Some features may not be parsed fully.
+11:13:50.368 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Parsed TiledMap: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/levels/Tile3.tmx
+11:13:50.369 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating tile layer entities
+11:13:50.370 [JavaFX Application Thread] DEBUG TilesetLoader        - Loading view for layer Tile Layer 1
+11:13:50.383 [JavaFX Application Thread] DEBUG TilesetLoader        - Created buffer with size 1920.0x1088.0
+11:13:50.493 [JavaFX Application Thread] WARN  TilesetLoader        - Diagonally flipped tiles are not currently supported
+11:13:50.494 [JavaFX Application Thread] WARN  TilesetLoader        - Diagonally flipped tiles are not currently supported
+11:13:50.494 [JavaFX Application Thread] WARN  TilesetLoader        - Diagonally flipped tiles are not currently supported
+11:13:50.495 [JavaFX Application Thread] WARN  TMXLevelLoader       - Parse error
+java.lang.IllegalArgumentException: Tileset for gid=7460 not found
+	at com.almasb.fxgl.entity.level.tiled.TilesetLoader.findTileset(TilesetLoader.kt:413)
+	at com.almasb.fxgl.entity.level.tiled.TilesetLoader.loadView(TilesetLoader.kt:116)
+	at com.almasb.fxgl.entity.level.tiled.TMXLevelLoader$createTileLayerEntities$1.invoke(TMXLevelLoader.kt:100)
+	at com.almasb.fxgl.entity.level.tiled.TMXLevelLoader$createTileLayerEntities$1.invoke(TMXLevelLoader.kt:89)
+	at com.almasb.fxgl.entity.level.tiled.TMXLevelLoader.createTileLayerEntities$lambda$3(TMXLevelLoader.kt:89)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1724)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:570)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:560)
+	at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:921)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:265)
+	at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:723)
+	at com.almasb.fxgl.entity.level.tiled.TMXLevelLoader.createTileLayerEntities(TMXLevelLoader.kt:117)
+	at com.almasb.fxgl.entity.level.tiled.TMXLevelLoader.load(TMXLevelLoader.kt:58)
+	at com.almasb.fxgl.app.services.FXGLAssetLoaderService.loadLevel(FXGLAssetLoaderService.kt:430)
+	at at.htl.droidrampage.GameApp.spawnTiles(GameApp.java:173)
+	at at.htl.droidrampage.GameApp.onUpdate(GameApp.java:380)
+	at com.almasb.fxgl.app.FXGLApplication$GameApplicationService.onGameUpdate(FXGLApplication.kt:421)
+	at com.almasb.fxgl.app.Engine.onGameUpdate(Engine.kt:138)
+	at com.almasb.fxgl.app.FXGLApplication.postServicesInit$lambda$7(FXGLApplication.kt:182)
+	at com.almasb.fxgl.scene.Scene.update(Scene.kt:113)
+	at com.almasb.fxgl.app.MainWindow$update$1.invoke(MainWindow.kt:115)
+	at com.almasb.fxgl.app.MainWindow$update$1.invoke(MainWindow.kt:115)
+	at com.almasb.fxgl.core.fsm.StateMachine.runOnActiveStates(StateMachine.kt:69)
+	at com.almasb.fxgl.app.MainWindow.update(MainWindow.kt:115)
+	at com.almasb.fxgl.app.FXGLApplication$GameApplicationService.onUpdate(FXGLApplication.kt:426)
+	at com.almasb.fxgl.app.Engine.loop(Engine.kt:134)
+	at com.almasb.fxgl.app.Engine.access$loop(Engine.kt:24)
+	at com.almasb.fxgl.app.Engine$loop$1.invoke(Engine.kt:28)
+	at com.almasb.fxgl.app.Engine$loop$1.invoke(Engine.kt:28)
+	at com.almasb.fxgl.app.LoopRunner.frame(LoopRunner.kt:103)
+	at com.almasb.fxgl.app.LoopRunner.access$frame(LoopRunner.kt:23)
+	at com.almasb.fxgl.app.LoopRunner$impl$2$1.onTick(LoopRunner.kt:57)
+	at com.almasb.fxgl.app.AnimationTimerLoop$timer$1.handle(LoopRunner.kt:137)
+	at javafx.animation.AnimationTimer$AnimationTimerReceiver.lambda$handle$0(AnimationTimer.java:58)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:138)
+	at javafx.animation.AnimationTimer$AnimationTimerReceiver.handle(AnimationTimer.java:57)
+	at com.sun.scenario.animation.AbstractPrimaryTimer.timePulseImpl(AbstractPrimaryTimer.java:356)
+	at com.sun.scenario.animation.AbstractPrimaryTimer$MainLoop.run(AbstractPrimaryTimer.java:266)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:588)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:572)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.pulseFromQueue(QuantumToolkit.java:565)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.lambda$runToolkit$11(QuantumToolkit.java:352)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.gtk.GtkApplication._runLoop(Native Method)
+	at com.sun.glass.ui.gtk.GtkApplication.lambda$runLoop$10(GtkApplication.java:263)
+	at java.base/java.lang.Thread.run(Thread.java:1516)
+
+11:13:50.498 [JavaFX Application Thread] WARN  TMXLevelLoader       - TiledMap generated from 1.8.2. Supported version: 1.9.0. Some features may not be parsed fully.
+11:13:50.501 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Parsed TiledMap: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/levels/Tile6.tmx
+11:13:50.501 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating tile layer entities
+11:13:50.501 [JavaFX Application Thread] DEBUG TilesetLoader        - Loading view for layer Tile Layer 1
+11:13:50.508 [JavaFX Application Thread] DEBUG TilesetLoader        - Created buffer with size 1920.0x1088.0
+11:13:50.620 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating object layer entities
+11:13:55.724 [JavaFX Application Thread] WARN  TMXLevelLoader       - TiledMap generated from 1.8.2. Supported version: 1.9.0. Some features may not be parsed fully.
+11:13:55.730 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Parsed TiledMap: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/levels/Tile2.tmx
+11:13:55.730 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating tile layer entities
+11:13:55.731 [JavaFX Application Thread] DEBUG TilesetLoader        - Loading view for layer Tile Layer 1
+11:13:55.740 [JavaFX Application Thread] DEBUG TilesetLoader        - Created buffer with size 1920.0x1088.0
+11:13:55.854 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating object layer entities
+11:14:00.751 [JavaFX Application Thread] WARN  TMXLevelLoader       - TiledMap generated from 1.8.2. Supported version: 1.9.0. Some features may not be parsed fully.
+11:14:00.759 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Parsed TiledMap: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/levels/Tile1.tmx
+11:14:00.759 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating tile layer entities
+11:14:00.760 [JavaFX Application Thread] DEBUG TilesetLoader        - Loading view for layer Kachelebene 1
+11:14:00.772 [JavaFX Application Thread] DEBUG TilesetLoader        - Created buffer with size 1920.0x1088.0
+11:14:00.915 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating object layer entities
+11:14:05.558 [JavaFX Application Thread] WARN  TMXLevelLoader       - TiledMap generated from 1.8.2. Supported version: 1.9.0. Some features may not be parsed fully.
+11:14:05.566 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Parsed TiledMap: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/levels/Tile3.tmx
+11:14:05.567 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating tile layer entities
+11:14:05.568 [JavaFX Application Thread] DEBUG TilesetLoader        - Loading view for layer Tile Layer 1
+11:14:05.584 [JavaFX Application Thread] DEBUG TilesetLoader        - Created buffer with size 1920.0x1088.0
+11:14:05.763 [JavaFX Application Thread] WARN  TilesetLoader        - Diagonally flipped tiles are not currently supported
+11:14:05.765 [JavaFX Application Thread] WARN  TilesetLoader        - Diagonally flipped tiles are not currently supported
+11:14:05.765 [JavaFX Application Thread] WARN  TilesetLoader        - Diagonally flipped tiles are not currently supported
+11:14:05.768 [JavaFX Application Thread] WARN  TMXLevelLoader       - Parse error
+java.lang.IllegalArgumentException: Tileset for gid=7460 not found
+	at com.almasb.fxgl.entity.level.tiled.TilesetLoader.findTileset(TilesetLoader.kt:413)
+	at com.almasb.fxgl.entity.level.tiled.TilesetLoader.loadView(TilesetLoader.kt:116)
+	at com.almasb.fxgl.entity.level.tiled.TMXLevelLoader$createTileLayerEntities$1.invoke(TMXLevelLoader.kt:100)
+	at com.almasb.fxgl.entity.level.tiled.TMXLevelLoader$createTileLayerEntities$1.invoke(TMXLevelLoader.kt:89)
+	at com.almasb.fxgl.entity.level.tiled.TMXLevelLoader.createTileLayerEntities$lambda$3(TMXLevelLoader.kt:89)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:214)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1724)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:570)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:560)
+	at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:921)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:265)
+	at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:723)
+	at com.almasb.fxgl.entity.level.tiled.TMXLevelLoader.createTileLayerEntities(TMXLevelLoader.kt:117)
+	at com.almasb.fxgl.entity.level.tiled.TMXLevelLoader.load(TMXLevelLoader.kt:58)
+	at com.almasb.fxgl.app.services.FXGLAssetLoaderService.loadLevel(FXGLAssetLoaderService.kt:430)
+	at at.htl.droidrampage.GameApp.spawnTiles(GameApp.java:173)
+	at at.htl.droidrampage.GameApp.onUpdate(GameApp.java:380)
+	at com.almasb.fxgl.app.FXGLApplication$GameApplicationService.onGameUpdate(FXGLApplication.kt:421)
+	at com.almasb.fxgl.app.Engine.onGameUpdate(Engine.kt:138)
+	at com.almasb.fxgl.app.FXGLApplication.postServicesInit$lambda$7(FXGLApplication.kt:182)
+	at com.almasb.fxgl.scene.Scene.update(Scene.kt:113)
+	at com.almasb.fxgl.app.MainWindow$update$1.invoke(MainWindow.kt:115)
+	at com.almasb.fxgl.app.MainWindow$update$1.invoke(MainWindow.kt:115)
+	at com.almasb.fxgl.core.fsm.StateMachine.runOnActiveStates(StateMachine.kt:69)
+	at com.almasb.fxgl.app.MainWindow.update(MainWindow.kt:115)
+	at com.almasb.fxgl.app.FXGLApplication$GameApplicationService.onUpdate(FXGLApplication.kt:426)
+	at com.almasb.fxgl.app.Engine.loop(Engine.kt:134)
+	at com.almasb.fxgl.app.Engine.access$loop(Engine.kt:24)
+	at com.almasb.fxgl.app.Engine$loop$1.invoke(Engine.kt:28)
+	at com.almasb.fxgl.app.Engine$loop$1.invoke(Engine.kt:28)
+	at com.almasb.fxgl.app.LoopRunner.frame(LoopRunner.kt:103)
+	at com.almasb.fxgl.app.LoopRunner.access$frame(LoopRunner.kt:23)
+	at com.almasb.fxgl.app.LoopRunner$impl$2$1.onTick(LoopRunner.kt:57)
+	at com.almasb.fxgl.app.AnimationTimerLoop$timer$1.handle(LoopRunner.kt:137)
+	at javafx.animation.AnimationTimer$AnimationTimerReceiver.lambda$handle$0(AnimationTimer.java:58)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:138)
+	at javafx.animation.AnimationTimer$AnimationTimerReceiver.handle(AnimationTimer.java:57)
+	at com.sun.scenario.animation.AbstractPrimaryTimer.timePulseImpl(AbstractPrimaryTimer.java:356)
+	at com.sun.scenario.animation.AbstractPrimaryTimer$MainLoop.run(AbstractPrimaryTimer.java:266)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:588)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:572)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.pulseFromQueue(QuantumToolkit.java:565)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.lambda$runToolkit$11(QuantumToolkit.java:352)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.gtk.GtkApplication._runLoop(Native Method)
+	at com.sun.glass.ui.gtk.GtkApplication.lambda$runLoop$10(GtkApplication.java:263)
+	at java.base/java.lang.Thread.run(Thread.java:1516)
+
+11:14:05.774 [JavaFX Application Thread] WARN  TMXLevelLoader       - TiledMap generated from 1.8.2. Supported version: 1.9.0. Some features may not be parsed fully.
+11:14:05.782 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Parsed TiledMap: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/levels/TileStart.tmx
+11:14:05.782 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating tile layer entities
+11:14:05.784 [JavaFX Application Thread] DEBUG TilesetLoader        - Loading view for layer Kachelebene 1
+11:14:05.788 [JavaFX Application Thread] DEBUG TilesetLoader        - Created buffer with size 1920.0x1088.0
+11:14:05.970 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating object layer entities
+11:14:10.840 [JavaFX Application Thread] WARN  TMXLevelLoader       - TiledMap generated from 1.8.2. Supported version: 1.9.0. Some features may not be parsed fully.
+11:14:10.845 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Parsed TiledMap: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/levels/Tile2.tmx
+11:14:10.845 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating tile layer entities
+11:14:10.846 [JavaFX Application Thread] DEBUG TilesetLoader        - Loading view for layer Tile Layer 1
+11:14:10.849 [JavaFX Application Thread] DEBUG TilesetLoader        - Created buffer with size 1920.0x1088.0
+11:14:10.987 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating object layer entities
+11:14:15.475 [JavaFX Application Thread] WARN  TMXLevelLoader       - TiledMap generated from 1.8.2. Supported version: 1.9.0. Some features may not be parsed fully.
+11:14:15.479 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Parsed TiledMap: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/levels/Tile6.tmx
+11:14:15.479 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating tile layer entities
+11:14:15.480 [JavaFX Application Thread] DEBUG TilesetLoader        - Loading view for layer Tile Layer 1
+11:14:15.482 [JavaFX Application Thread] DEBUG TilesetLoader        - Created buffer with size 1920.0x1088.0
+11:14:15.624 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating object layer entities
+11:14:20.362 [JavaFX Application Thread] WARN  TMXLevelLoader       - TiledMap generated from 1.8.2. Supported version: 1.9.0. Some features may not be parsed fully.
+11:14:20.366 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Parsed TiledMap: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/levels/Tile2.tmx
+11:14:20.366 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating tile layer entities
+11:14:20.367 [JavaFX Application Thread] DEBUG TilesetLoader        - Loading view for layer Tile Layer 1
+11:14:20.380 [JavaFX Application Thread] DEBUG TilesetLoader        - Created buffer with size 1920.0x1088.0
+11:14:20.507 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating object layer entities
+11:14:25.182 [JavaFX Application Thread] WARN  TMXLevelLoader       - TiledMap generated from 1.8.2. Supported version: 1.9.0. Some features may not be parsed fully.
+11:14:25.187 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Parsed TiledMap: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/levels/Tile6.tmx
+11:14:25.187 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating tile layer entities
+11:14:25.187 [JavaFX Application Thread] DEBUG TilesetLoader        - Loading view for layer Tile Layer 1
+11:14:25.192 [JavaFX Application Thread] DEBUG TilesetLoader        - Created buffer with size 1920.0x1088.0
+11:14:25.353 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating object layer entities
+11:14:29.874 [JavaFX Application Thread] WARN  TMXLevelLoader       - TiledMap generated from 1.8.2. Supported version: 1.9.0. Some features may not be parsed fully.
+11:14:29.877 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Parsed TiledMap: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/levels/Tile4.tmx
+11:14:29.877 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating tile layer entities
+11:14:29.878 [JavaFX Application Thread] DEBUG TilesetLoader        - Loading view for layer Tile Layer 1
+11:14:29.888 [JavaFX Application Thread] DEBUG TilesetLoader        - Created buffer with size 1920.0x1088.0
+11:14:30.015 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating object layer entities
+11:14:34.672 [JavaFX Application Thread] WARN  TMXLevelLoader       - TiledMap generated from 1.8.2. Supported version: 1.9.0. Some features may not be parsed fully.
+11:14:34.677 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Parsed TiledMap: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/levels/Tile6.tmx
+11:14:34.677 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating tile layer entities
+11:14:34.679 [JavaFX Application Thread] DEBUG TilesetLoader        - Loading view for layer Tile Layer 1
+11:14:34.705 [JavaFX Application Thread] DEBUG TilesetLoader        - Created buffer with size 1920.0x1088.0
+11:14:34.825 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating object layer entities
+11:14:46.268 [JavaFX Application Thread] DEBUG GameApplicationServi - Starting new game
+11:14:46.269 [JavaFX Application Thread] DEBUG Input                - Clearing active input actions
+11:14:46.281 [JavaFX Application Thread] DEBUG GameApplicationServi - Removing overlay from GameScene and adding to FXGLLoadingScene
+11:14:46.282 [JavaFX Application Thread] DEBUG PrimaryStageWindow   - GameScene -> FXGLLoadingScene
+11:14:46.282 [JavaFX Application Thread] DEBUG GameApplicationServi - Clearing previous game
+11:14:46.282 [JavaFX Application Thread] DEBUG GameScene            - Clearing game scene
+11:14:46.282 [JavaFX Application Thread] DEBUG GameWorld            - Clearing game world
+11:14:46.290 [JavaFX Application Thread] DEBUG PhysicsWorld         - Clearing physics world
+11:14:46.292 [FXGL Background Thread 5 ] DEBUG FXGLApplication      - Initializing game
+11:14:46.295 [FXGL Background Thread 5 ] WARN  TMXLevelLoader       - TiledMap generated from 1.8.2. Supported version: 1.9.0. Some features may not be parsed fully.
+11:14:46.300 [FXGL Background Thread 5 ] DEBUG TMXLevelLoader       - Parsed TiledMap: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/levels/TileStart.tmx
+11:14:46.300 [FXGL Background Thread 5 ] DEBUG TMXLevelLoader       - Creating tile layer entities
+11:14:46.301 [FXGL Background Thread 5 ] DEBUG TilesetLoader        - Loading view for layer Kachelebene 1
+11:14:46.323 [FXGL Background Thread 5 ] DEBUG TilesetLoader        - Created buffer with size 1920.0x1088.0
+11:14:46.522 [FXGL Background Thread 5 ] DEBUG TMXLevelLoader       - Creating object layer entities
+11:14:46.536 [FXGL Background Thread 5 ] DEBUG GameWorld            - Clearing removable entities
+11:14:46.537 [FXGL Background Thread 5 ] DEBUG GameWorld            - Setting level: com.almasb.fxgl.entity.level.Level@f2be885
+11:14:46.982 [FXGL Background Thread 5 ] INFO  FXGLApplication      - Game initialization took: 0.689 sec
+11:14:46.987 [JavaFX Application Thread] DEBUG Input                - Clearing active input actions
+11:14:47.004 [JavaFX Application Thread] DEBUG GameApplicationServi - Removing overlay from FXGLLoadingScene and adding to GameScene
+11:14:47.005 [JavaFX Application Thread] DEBUG PrimaryStageWindow   - FXGLLoadingScene -> GameScene
+11:14:47.009 [JavaFX Application Thread] WARN  TMXLevelLoader       - TiledMap generated from 1.8.2. Supported version: 1.9.0. Some features may not be parsed fully.
+11:14:47.013 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Parsed TiledMap: file:/home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/target/classes/assets/levels/Tile2.tmx
+11:14:47.013 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating tile layer entities
+11:14:47.014 [JavaFX Application Thread] DEBUG TilesetLoader        - Loading view for layer Tile Layer 1
+11:14:47.042 [JavaFX Application Thread] DEBUG TilesetLoader        - Created buffer with size 1920.0x1088.0
+11:14:47.143 [JavaFX Application Thread] DEBUG TMXLevelLoader       - Creating object layer entities
+11:18:12.963 [JavaFX Application Thread] DEBUG FXGLApplication      - Exiting FXGL
+11:18:12.964 [JavaFX Application Thread] DEBUG LoopRunner           - Stopping loop
+11:18:12.964 [JavaFX Application Thread] DEBUG SystemBundleService  - Saving FXGL system data
+11:18:12.968 [JavaFX Application Thread] DEBUG FileSystemAccess     - Writing to: /home/franz/Documents/Schule/3-Klasse/POS/DroidRampage/system/fxgl.bundle
+11:18:12.970 [JavaFX Application Thread] DEBUG Async                - Shutting down background threads
+11:18:12.970 [JavaFX Application Thread] DEBUG PrimaryStageWindow   - Closing main window
+11:18:12.974 [JavaFX Application Thread] DEBUG Logger               - Closing Logger
