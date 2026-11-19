@@ -15,10 +15,45 @@ Built with **FXGL**, focused on clean visuals, increasing difficulty, and skill-
 
 | Key | Action |
 |-----|--------|
-| A   | Move Left |
-| D   | Move Right |
-| Space | Jump |
-| R   | Respawn |
+| A / ←   | Move Left (menu: previous droid) |
+| D / →   | Move Right (menu: next droid) |
+| Space / W / ↑ | Jump |
+| F / J | Attack (depends on droid) |
+| G / K | Throw bomb (GRUMP only) |
+| Enter / Space | Start run (menu) |
+| R / Enter | Restart after death |
+| M   | Back to main menu after death |
+
+### 🤖 Droids
+
+Pick your droid in the start menu – each one plays a bit differently:
+
+| Droid | Inspired by | Speed | Jump | Attack |
+|-------|-------------|-------|------|--------|
+| ASTRO | R2 style astromech | 400 | 720 | **Taser** – short range, chain-zaps up to 3 enemies and stuns them |
+| GRUMP | Chopper style astromech | 470 | 700 | **Claw** (melee, also blocks enemy shots) + **Bombs** (G) |
+| PROTO | C-3PO style protocol droid | 365 | 790 | **Blaster** – long-range rapid fire |
+
+### 👾 Enemies
+
+Each enemy type mirrors one droid's fighting style:
+
+| Enemy | Mirrors | Behaviour | HP | Points |
+|-------|---------|-----------|----|--------|
+| Zapper drone | ASTRO | Hovers towards you, charges up and zaps at close range | 2 | 40 |
+| Brute | GRUMP | Patrols, charges, smashes with its claw and lobs bombs | 4 | 70 |
+| Marksman | PROTO | Aims with a red laser sight, then fires – dodge when the sight locks | 2 | 60 |
+
+- You have **3 HP** – enemy hits and saws cost 1 HP (short invulnerability afterwards)
+- Falling into the void, lasers, energy spikes and the camera still kill instantly
+- Jump on an enemy to **stomp** it
+
+Sprites are generated with `python3 tools/generate_sprites.py` (4 frames: idle, walk ×2, jump).
+
+### 🏆 High Scores
+
+- Score = collected credits + distance in meters + points for destroyed enemies
+- The top 10 runs are saved in `~/.droidrampage/highscores.txt` and shown in the start menu
 
 ---
 
@@ -27,6 +62,22 @@ Built with **FXGL**, focused on clean visuals, increasing difficulty, and skill-
 ### 🌍 Endless World
 - Tiles are generated infinitely
 - No fixed level → every run is different
+- Hand-built Tiled maps alternate with **procedurally generated segments** that get harder over time:
+
+| Element | Behaviour |
+|---------|-----------|
+| 🟦 Solid platform | Normal neon platform |
+| 🟪 Moving platform | Elevators (up/down) and ferries (left/right) – they carry you along |
+| 🟧 Crumbling platform | Shakes and falls shortly after you step on it |
+| 🟩 Bounce pad | Launches you up to high bonus platforms |
+| 🟥 Laser gate | Blinks on and off – time it or jump over the low ones |
+| 🟪 Phase platform | Disappears and reappears in a rhythm (flickers before vanishing) |
+| 🟨 Conveyor belt | Pushes you forwards or backwards |
+| ⚙️ Saw | Rolls back and forth on a rail – jump over it |
+| 🔺 Energy spikes | Instant death (also used in the Tiled maps) |
+
+The hand-built Tiled maps use the same visuals as the generated segments: only their objects
+(`plattform`, `Boden`, `Death`, `Item1`) are drawn, the old tile layer is hidden.
 
 ### 🚀 Increasing Difficulty
 - Camera speed increases over time
