@@ -5,6 +5,30 @@ Built with **FXGL**, focused on clean visuals, increasing difficulty, and skill-
 
 ---
 
+## ▶️ Play it
+
+**Without installing anything:** get `DroidRampage.zip`, unzip it and double-click
+`Start-Windows.bat` (Windows) or `Start-Mac.command` (macOS), or run `./start-linux.sh` (Linux).
+If Java 17+ is missing, the starter downloads a private Java runtime (~50 MB) into a
+`java-runtime` folder next to it – nothing is installed system-wide.
+
+**With Java 17+ installed:** just double-click `DroidRampage.jar` (or `java -jar DroidRampage.jar`).
+
+**From source:** `./mvnw javafx:run` (needs a JDK 17+).
+
+### Building the zip to share
+
+```bash
+python3 tools/build_release.py
+```
+
+This creates `target/DroidRampage.jar` (one jar for Windows, macOS Intel + Apple Silicon and Linux)
+and `target/DroidRampage.zip` (jar + start scripts from `launcher/` + `HOW-TO-PLAY.txt`).
+The script merges JavaFX's Intel and Apple-Silicon Mac libraries into universal binaries,
+because both use the same file names and only one could otherwise fit into the jar.
+
+---
+
 ## 🎮 Gameplay
 
 - Move through an **endless generated world**

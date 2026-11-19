@@ -1,0 +1,38 @@
+DROID RAMPAGE
+=============
+
+START THE GAME
+--------------
+Windows:  double-click  Start-Windows.bat
+macOS:    double-click  Start-Mac.command
+Linux:    run           ./start-linux.sh
+
+If Java 17 or newer is not installed, the starter downloads a private copy
+(about 50 MB) into the "java-runtime" folder the first time. Nothing is
+installed on your system - delete the folder to remove it.
+
+Already have Java 17+?  Just double-click DroidRampage.jar
+(or run:  java -jar DroidRampage.jar)
+
+SECURITY WARNINGS (the game is not signed, so this is normal)
+--------------------------------------------------------------
+Windows:  "Windows protected your PC"  ->  More info  ->  Run anyway
+macOS:    "cannot be opened"  ->  right-click Start-Mac.command  ->  Open  ->  Open
+          (macOS 15+: System Settings -> Privacy & Security -> "Open Anyway")
+
+CONTROLS
+--------
+Menu:     A / D  choose droid      ENTER / SPACE  start
+Game:     A / D  move              SPACE / W      jump
+          F      attack            G              bomb (GRUMP only)
+          jump on enemies to stomp them
+After death:  R  restart     M  menu
+
+The three droids fight differently:
+  ASTRO  - taser that chains between up to 3 enemies and stuns them
+  GRUMP  - fast claw (also blocks shots) + throwable bombs
+  PROTO  - long-range blaster
+
+Your high scores are saved in the ".droidrampage" folder in your home directory.
+
+Have fun - and send feedback!
