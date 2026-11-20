@@ -121,7 +121,7 @@ public abstract class EnemyComponent extends Component {
     }
 
     protected void setFrame(int index) {
-        sprite.setViewport(new Rectangle2D(index * kind.getFrameW(), 0, kind.getFrameW(), kind.getFrameH()));
+        sprite.setViewport(PixelArt.frame(index, kind.getFrameW(), kind.getFrameH()));
     }
 
     protected Point2D playerCenter(Entity player) {

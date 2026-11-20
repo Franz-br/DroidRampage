@@ -112,7 +112,7 @@ public class PlayerComponent extends Component {
         } else {
             frame = DroidSkin.FRAME_IDLE;
         }
-        sprite.setViewport(new Rectangle2D(frame * DroidSkin.FRAME_W, 0, DroidSkin.FRAME_W, DroidSkin.FRAME_H));
+        sprite.setViewport(PixelArt.frame(frame, DroidSkin.FRAME_W, DroidSkin.FRAME_H));
     }
 
     /**

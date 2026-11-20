@@ -1,5 +1,6 @@
 package at.htl.droidrampage;
 
+import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.entity.Entity;
@@ -36,7 +37,10 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 public class GameApp extends GameApplication {
 
     private static final int VIEWPORT_W = 120 * 16; // 1920
-    private static final int VIEWPORT_H = 68 * 16;  // 1088
+    // Genau Full-HD: Auf einem 1920×1080-Bildschirm wird dann 1:1 ohne Skalierung gezeichnet (scharfe Pixel).
+    // Die Tiled-Maps sind 68 Tiles = 1088 px hoch – die untersten 8 px (Teil des Bodens) liegen außerhalb des Bildes.
+    private static final int VIEWPORT_H = 1080;
+    private static final int WORLD_H = 68 * 16;     // 1088
 
     // TileStart is exactly one map wide: 120 tiles × 16 pixels = 1920 pixels
     private static final double TILESTART_WORLD_WIDTH = 120 * 16.0; // 1920 -- Fehleranfällig
@@ -137,7 +141,10 @@ public class GameApp extends GameApplication {
     private int lastShownHp = -1;
     private Text attackHint;
 
-    private static final boolean START_FULLSCREEN = false; // true = fullscreen, false = maximized window
+    private static final boolean START_FULLSCREEN = true; // true = Vollbild (F11 wechselt), false = maximiertes Fenster
+
+    // Exakte Kameraposition; der Viewport selbst wird auf ganze Pixel gerundet, damit nichts "zwischen" Pixeln landet
+    private double cameraXExact = 0;
 
     private Entity player;
     private boolean inputsRegistered = false;
@@ -160,6 +167,11 @@ public class GameApp extends GameApplication {
         // useful for maximized-window mode
         settings.setManualResizeEnabled(true);
 
+        // Keine "logs/"- und "system/"-Ordner neben dem .jar anlegen: Auf Schul-PCs liegt das Spiel oft in
+        // Ordnern ohne Schreibrechte. Die High Scores speichert der HighScoreManager im Benutzerordner.
+        settings.setFileSystemWriteAllowed(false);
+        settings.setApplicationMode(ApplicationMode.RELEASE);
+
         settings.setTitle("Droid Rampage");
         settings.setVersion("1.5");
     }
@@ -179,6 +191,10 @@ public class GameApp extends GameApplication {
         if (!START_FULLSCREEN) {
             Platform.runLater(() -> getPrimaryStage().setMaximized(true)); // Stage access must happen on JavaFX thread
         }
+        // Wird das Vollbild verlassen (F11), soll das Fenster den Bildschirm trotzdem ausfüllen
+        getSettings().getFullScreen().addListener((obs, was, now) -> {
+            if (!now) Platform.runLater(() -> getPrimaryStage().setMaximized(true));
+        });
 
         getGameWorld().addEntityFactory(new PlatformFactory());
         loadTmxSegment("TileStart.tmx", 0);
@@ -367,6 +383,7 @@ public class GameApp extends GameApplication {
         // Setze Viewport/Kamera zurück (0,0), damit Spieler nicht sofort nach Restart stirbt
         try {
             if (getGameScene() != null && getGameScene().getViewport() != null) {
+                cameraXExact = 0;
                 getGameScene().getViewport().setX(0);
             }
         } catch (Exception ignore) {
@@ -410,16 +427,27 @@ public class GameApp extends GameApplication {
 
     //Hintergrund
 
+    private static Image imgSky, imgMid, imgGnd;
+
+    private static Image loadBackground(String file) {
+        Image raw = new Image(GameApp.class.getResourceAsStream("/assets/textures/" + file));
+        // Höchstens ×2: 3840×2160 passt noch sicher in jede Grafikkarten-Textur
+        return PixelArt.scaleNearest(raw, Math.min(PixelArt.FACTOR, 2));
+    }
+
     private void initParallaxBackground() {
         // Alten Hintergrund (vom letzten Run) entfernen, sonst stapeln sich die Ebenen bei jedem Neustart
         if (bgPane != null) {
-            getGameScene().getRoot().getChildren().remove(bgPane);
+            getGameScene().getContentRoot().getChildren().remove(bgPane);
         }
 
         // Lade die drei Hintergrund-Layer-Bilder
-        Image imgSky = new Image(getClass().getResourceAsStream("/assets/textures/bg_layer1_sky.png"));
-        Image imgMid = new Image(getClass().getResourceAsStream("/assets/textures/bg_layer2_mid.png"));
-        Image imgGnd = new Image(getClass().getResourceAsStream("/assets/textures/bg_layer3_ground.png"));
+        // Einmal geladen und doppelt so groß vorbereitet (scharf auch auf 1440p-Bildschirmen, siehe PixelArt)
+        if (imgSky == null) {
+            imgSky = loadBackground("bg_layer1_sky.png");
+            imgMid = loadBackground("bg_layer2_mid.png");
+            imgGnd = loadBackground("bg_layer3_ground.png");
+        }
 
         // Erstelle je zwei ImageViews pro Layer für nahtlose Schleife
         bgLayer1a = new ImageView(imgSky);
@@ -433,6 +461,7 @@ public class GameApp extends GameApplication {
             iv.setFitWidth(VIEWPORT_W);
             iv.setFitHeight(VIEWPORT_H);
             iv.setPreserveRatio(false);
+            iv.setSmooth(false); // Bilder haben genau Viewport-Größe → keine Interpolation nötig, bleibt scharf
         }
 
         // Positioniere die zweiten Views rechts neben den ersten (für Schleifen-Effekt)
@@ -442,7 +471,8 @@ public class GameApp extends GameApplication {
         // Kombiniere alle Layer in einer Pane und füge sie zum Hintergrund hinzu (Index 0 = ganz hinten)
         bgPane = new Pane(bgLayer1a, bgLayer1b, bgLayer2a, bgLayer2b, bgLayer3);
         bgPane.setMouseTransparent(true);
-        getGameScene().getRoot().getChildren().add(0, bgPane);
+        // contentRoot wird von FXGL mitskaliert (z.B. ×1.333 auf 2560×1440) – root nicht, dort würde der Hintergrund nur eine Ecke füllen
+        getGameScene().getContentRoot().getChildren().add(0, bgPane);
     }
 
 
@@ -479,21 +509,21 @@ public class GameApp extends GameApplication {
         // ═══════════════════════════════════════════════════════════════════════════
         if (camPanning) {
             // "Intro-Pan": Bewege Kamera sanft von 0 bis cameraPanTargetX
-            double currentX = getGameScene().getViewport().getX();
             double panSpeed = autoScrollActive ? currentAutoScrollSpeed : CAMERA_PAN_FALLBACK_SPEED;
-            double newX     = currentX + panSpeed * tpf;
+            double newX     = cameraXExact + panSpeed * tpf;
             if (newX >= cameraPanTargetX) {
                 newX       = cameraPanTargetX;
                 camPanning = false;  // Pan beendet, wechsle zu normalem Auto-Scroll
             }
-            getGameScene().getViewport().setX(newX);
+            cameraXExact = newX;
         } else {
             // Normaler Auto-Scroll: Bewege Kamera kontinuierlich mit currentAutoScrollSpeed
-            double currentX = getGameScene().getViewport().getX();
-            getGameScene().getViewport().setX(currentX + currentAutoScrollSpeed * tpf);
+            cameraXExact += currentAutoScrollSpeed * tpf;
         }
-
-        double cameraX = getGameScene().getViewport().getX();
+        // Auf ganze Bildschirm-Pixel runden: Bei halben Pixeln würde JavaFX Texturen interpolieren → verschwommen
+        PixelArt.setDeviceScale(currentDeviceScale());
+        double cameraX = PixelArt.snap(cameraXExact);
+        getGameScene().getViewport().setX(cameraX);
 
         // ═══════════════════════════════════════════════════════════════════════════
         // TOD-PRÜFUNG: Spieler fällt ins Void, wird von Kamera überholt oder vom Laser getroffen
@@ -543,8 +573,16 @@ public class GameApp extends GameApplication {
         }
     }
 
+    /** Echte Bildschirm-Pixel pro Spiel-Pixel (FXGL-Skalierung × Windows/macOS-Anzeigeskalierung). */
+    private double currentDeviceScale() {
+        double scale = Math.min(getSettings().getActualWidth() / VIEWPORT_W,
+                                getSettings().getActualHeight() / VIEWPORT_H);
+        var window = getPrimaryStage();
+        return window != null ? scale * window.getOutputScaleX() : scale;
+    }
+
     private boolean isPlayerBelowVoid() {
-        return player != null && player.getY() > VIEWPORT_H + DEATH_FALL_BUFFER;
+        return player != null && player.getY() > WORLD_H + DEATH_FALL_BUFFER;
     }
 
     private boolean isPlayerBehindCamera(double cameraX) {
@@ -700,7 +738,7 @@ public class GameApp extends GameApplication {
      * Ergebnis: Ständiges nahtloses Looping des Bildes ohne Lücken.
      */
     private void scrollLayer(ImageView a, ImageView b, double offset) {
-        double mod = offset % VIEWPORT_W;
+        double mod = PixelArt.snap(offset % VIEWPORT_W); // ganze Bildschirm-Pixel → scharf
         a.setTranslateX(-mod);           // Verschiebe 'a' nach links
         b.setTranslateX(VIEWPORT_W - mod); // Positioniere 'b' direkt rechts neben 'a'
     }
@@ -891,6 +929,13 @@ public class GameApp extends GameApplication {
                 }
             }
         }, KeyCode.M);
+
+        getInput().addAction(new UserAction("Toggle Fullscreen") {
+            @Override protected void onActionBegin() {
+                var fullScreen = getSettings().getFullScreen();
+                fullScreen.set(!fullScreen.get());
+            }
+        }, KeyCode.F11);
     }
 
     private UserAction movementAction(String name, boolean right, boolean arrow) {

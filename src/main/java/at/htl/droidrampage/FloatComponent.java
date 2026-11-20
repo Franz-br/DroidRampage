@@ -18,9 +18,7 @@ public class FloatComponent extends Component {
     @Override
     public void onUpdate(double tpf) {
         time += tpf;
-        view.setTranslateY(Math.sin(time * 3) * 4);
-        double s = 1 + Math.sin(time * 6) * 0.04;
-        view.setScaleX(s);
-        view.setScaleY(s);
+        // Nur ganze Pixel und kein Pulsieren per Skalierung – sonst zeichnet JavaFX den Chip verschwommen
+        view.setTranslateY(PixelArt.snap(Math.sin(time * 3) * 4));
     }
 }

@@ -34,7 +34,7 @@ public enum EnemyKind {
 
     public Image getSheet() {
         if (sheet == null) {
-            sheet = new Image(EnemyKind.class.getResourceAsStream("/assets/textures/" + sheetFile));
+            sheet = PixelArt.sharp(new Image(EnemyKind.class.getResourceAsStream("/assets/textures/" + sheetFile)));
         }
         return sheet;
     }

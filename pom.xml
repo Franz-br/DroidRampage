@@ -166,6 +166,37 @@
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>default-compile</id>
+                        <configuration>
+                            <excludes>
+                                <exclude>at/htl/droidrampage/Launcher.java</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                    <!-- Launcher für Java 8 kompilieren: startet auch mit alter Java-Version und
+                         zeigt dann eine verständliche Meldung statt eines kryptischen Fehlers. -->
+                    <execution>
+                        <id>compile-launcher-java8</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <!-- source/target statt release: nicht jedes JDK bringt die Java-8-API-Daten (ct.sym) mit.
+                                 Launcher.java darf deshalb nur APIs benutzen, die es schon in Java 8 gab. -->
+                            <source>8</source>
+                            <target>8</target>
+                            <includes>
+                                <include>at/htl/droidrampage/Launcher.java</include>
+                            </includes>
+                            <compilerArgs>
+                                <arg>-Xlint:-options</arg>
+                            </compilerArgs>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <!-- Create a single "fat" jar with all dependencies included. -->
             <plugin>

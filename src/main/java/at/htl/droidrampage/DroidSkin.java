@@ -43,7 +43,8 @@ public enum DroidSkin {
     private final double speed;
     private final double jumpForce;
     private final Color accent;
-    private Image sheet; // lazy geladen (JavaFX muss bereits laufen)
+    private Image rawSheet; // lazy geladen (JavaFX muss bereits laufen)
+    private Image sheet;
 
     DroidSkin(String displayName, String inspiredBy, String perk, String attack, String attackHint, String sheetFile,
               double speed, double jumpForce, Color accent) {
@@ -58,9 +59,18 @@ public enum DroidSkin {
         this.accent = accent;
     }
 
+    /** Sprite-Sheet in Originalgröße (40×64 pro Frame). */
+    public Image getRawSheet() {
+        if (rawSheet == null) {
+            rawSheet = new Image(DroidSkin.class.getResourceAsStream("/assets/textures/" + sheetFile));
+        }
+        return rawSheet;
+    }
+
+    /** Sprite-Sheet, {@link PixelArt#FACTOR}-fach vergrößert – Frames mit {@link PixelArt#frame} auswählen. */
     public Image getSheet() {
         if (sheet == null) {
-            sheet = new Image(DroidSkin.class.getResourceAsStream("/assets/textures/" + sheetFile));
+            sheet = PixelArt.sharp(getRawSheet());
         }
         return sheet;
     }

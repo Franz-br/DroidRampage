@@ -29,7 +29,8 @@ import java.util.List;
 public class StartMenu {
 
     public static final String FONT = "Monospaced";
-    private static final double SPRITE_SCALE = 3.2;
+    // Ganzzahlig: Die Sheets werden vorab per Nearest Neighbor vergrößert (PixelArt) → scharfe Pixel
+    private static final int SPRITE_SCALE = 3;
 
     private final StackPane root;
     private final List<VBox> cards = new ArrayList<>();
@@ -81,11 +82,10 @@ public class StartMenu {
     }
 
     private VBox buildCard(DroidSkin skin) {
-        ImageView sprite = new ImageView(skin.getSheet());
+        ImageView sprite = new ImageView(PixelArt.scaleNearest(skin.getRawSheet(), SPRITE_SCALE * PixelArt.FACTOR));
         sprite.setViewport(frame(DroidSkin.FRAME_IDLE));
         sprite.setFitWidth(DroidSkin.FRAME_W * SPRITE_SCALE);
         sprite.setFitHeight(DroidSkin.FRAME_H * SPRITE_SCALE);
-        sprite.setSmooth(false);
         sprites.add(sprite);
 
         StackPane spriteBox = new StackPane(sprite);
@@ -191,8 +191,8 @@ public class StartMenu {
                     + "-fx-border-color: " + (active ? accentHex : "#2a2f4a") + ";");
             card.setEffect(active ? new DropShadow(34, skin.getAccent()) : null);
             card.setOpacity(active ? 1.0 : 0.6);
-            card.setScaleX(active ? 1.06 : 0.96);
-            card.setScaleY(active ? 1.06 : 0.96);
+            // Ausgewählte Karte wird angehoben statt vergrößert (Skalieren würde die Pixel-Grafik verwischen)
+            card.setTranslateY(active ? -14 : 0);
             if (!active) {
                 sprites.get(skin.ordinal()).setViewport(frame(DroidSkin.FRAME_IDLE));
                 sprites.get(skin.ordinal()).setTranslateY(0);
@@ -209,7 +209,7 @@ public class StartMenu {
         int f;
         if (cycle > 2.4) {
             f = DroidSkin.FRAME_JUMP;
-            sprite.setTranslateY(-Math.sin((cycle - 2.4) / 0.6 * Math.PI) * 26);
+            sprite.setTranslateY(PixelArt.snap(-Math.sin((cycle - 2.4) / 0.6 * Math.PI) * 26));
         } else {
             f = ((int) (time / 0.14)) % 2 == 0 ? DroidSkin.FRAME_WALK_A : DroidSkin.FRAME_WALK_B;
             sprite.setTranslateY(0);
@@ -225,7 +225,8 @@ public class StartMenu {
     // ─────────────────────────── Helfer ───────────────────────────
 
     private static Rectangle2D frame(int index) {
-        return new Rectangle2D(index * DroidSkin.FRAME_W, 0, DroidSkin.FRAME_W, DroidSkin.FRAME_H);
+        int s = SPRITE_SCALE * PixelArt.FACTOR;
+        return new Rectangle2D(index * DroidSkin.FRAME_W * s, 0, DroidSkin.FRAME_W * s, DroidSkin.FRAME_H * s);
     }
 
     static Text text(String s, double size, Color color) {

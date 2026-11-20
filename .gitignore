@@ -1,4 +1,6 @@
-target/
+target/*
+!target/DroidRampage.jar
+!target/DroidRampage.zip
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/

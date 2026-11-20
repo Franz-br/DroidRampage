@@ -7,6 +7,12 @@ Built with **FXGL**, focused on clean visuals, increasing difficulty, and skill-
 
 ## ▶️ Play it
 
+**Ready-to-play files are in the [`target/`](target/) folder** – no IDE, Maven or build needed,
+they start the game instantly:
+
+- [`target/DroidRampage.jar`](target/DroidRampage.jar) – double-click it if Java 17+ is installed
+- [`target/DroidRampage.zip`](target/DroidRampage.zip) – jar + start scripts, works even without Java
+
 **Without installing anything:** get `DroidRampage.zip`, unzip it and double-click
 `Start-Windows.bat` (Windows) or `Start-Mac.command` (macOS), or run `./start-linux.sh` (Linux).
 If Java 17+ is missing, the starter downloads a private Java runtime (~50 MB) into a
@@ -47,6 +53,7 @@ because both use the same file names and only one could otherwise fit into the j
 | Enter / Space | Start run (menu) |
 | R / Enter | Restart after death |
 | M   | Back to main menu after death |
+| F11 | Toggle fullscreen (the game starts in fullscreen) |
 
 ### 🤖 Droids
 

@@ -15,11 +15,18 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class PlatformFactory implements EntityFactory {
+
+    /** Credit-Chips, bereits auf Anzeigegröße verkleinert (Schlüssel: Datei@Breite). */
+    private static final Map<String, Image> CHIP_CACHE = new HashMap<>();
 
     /**
      * TMX object dimensions arrive as Double from the TMX loader,
@@ -94,15 +101,16 @@ public class PlatformFactory implements EntityFactory {
         int h = dim(data, "height");
 
         Node view = creditView("credit1.png", w, h, Color.web("#ff9a52"));
-        return FXGL.entityBuilder()
+        Group holder = new Group(view);
+        return snapped(holder, FXGL.entityBuilder()
                 .from(data)
                 .type(EntityType.Coin)
-                .view(view)
+                .view(holder)
                 .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(w, h)))
                 .collidable()
                 .with("spawnName", "Credit1")
                 .with(new FloatComponent(view))
-                .build();
+                .build());
     }
 
     @Spawns("Credit2")
@@ -111,15 +119,16 @@ public class PlatformFactory implements EntityFactory {
         int h = dim(data, "height");
 
         Node view = creditView("credit2.png", w, h, Color.web("#d8e6ff"));
-        return FXGL.entityBuilder()
+        Group holder = new Group(view);
+        return snapped(holder, FXGL.entityBuilder()
                 .from(data)
                 .type(EntityType.Coin)
-                .view(view)
+                .view(holder)
                 .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(w, h)))
                 .collidable()
                 .with("spawnName", "Credit2")
                 .with(new FloatComponent(view))
-                .build();
+                .build());
     }
 
     @Spawns("Credit3")
@@ -128,15 +137,16 @@ public class PlatformFactory implements EntityFactory {
         int h = dim(data, "height");
 
         Node view = creditView("credit3.png", w, h, Color.web("#ffd34a"));
-        return FXGL.entityBuilder()
+        Group holder = new Group(view);
+        return snapped(holder, FXGL.entityBuilder()
                 .from(data)
                 .type(EntityType.Coin)
-                .view(view)
+                .view(holder)
                 .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(w, h)))
                 .collidable()
                 .with("spawnName", "Credit3")
                 .with(new FloatComponent(view))
-                .build();
+                .build());
     }
 
     @Spawns("player")
@@ -156,23 +166,24 @@ public class PlatformFactory implements EntityFactory {
 
         // Spritesheet (4 Frames) – der sichtbare Ausschnitt wird vom PlayerComponent animiert
         ImageView sprite = new ImageView(skin.getSheet());
-        sprite.setViewport(new Rectangle2D(0, 0, DroidSkin.FRAME_W, DroidSkin.FRAME_H));
-        sprite.setFitWidth(w);
+        sprite.setViewport(PixelArt.frame(0, DroidSkin.FRAME_W, DroidSkin.FRAME_H));
+        sprite.setFitWidth(w);   // Sheet liegt vergrößert vor (PixelArt.FACTOR) → wird scharf auf Spielgröße gebracht
         sprite.setFitHeight(h);
         sprite.setSmooth(false);
         DropShadow rim = new DropShadow(10, skin.getAccent().deriveColor(0, 1, 1, 0.55));
         sprite.setEffect(rim);
 
-        return FXGL.entityBuilder()
+        Group holder = new Group(sprite);
+        return snapped(holder, FXGL.entityBuilder()
                 .from(data)
                 .type(EntityType.Player)
-                .view(sprite)
+                .view(holder)
                 .bbox(new HitBox("body", new Point2D(4, 0), BoundingShape.box(w - 8, h - 4)))
                 .with(physics)
                 .with(new PlayerComponent(skin, sprite))
                 .with(new PlayerCombatComponent(skin))
                 .collidable()
-                .build();
+                .build());
     }
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -312,20 +323,29 @@ public class PlatformFactory implements EntityFactory {
 
     private static ImageView enemySprite(EnemyKind kind) {
         ImageView sprite = new ImageView(kind.getSheet());
-        sprite.setViewport(new Rectangle2D(0, 0, kind.getFrameW(), kind.getFrameH()));
+        sprite.setViewport(PixelArt.frame(0, kind.getFrameW(), kind.getFrameH()));
+        sprite.setFitWidth(kind.getFrameW());
+        sprite.setFitHeight(kind.getFrameH());
         sprite.setSmooth(false);
         return sprite;
     }
 
     private static Entity enemy(SpawnData data, EnemyKind kind, Node view, HitBox box, EnemyComponent behaviour) {
-        return FXGL.entityBuilder()
+        Group holder = new Group(view);
+        return snapped(holder, FXGL.entityBuilder()
                 .from(data)
                 .type(EntityType.Enemy)
-                .view(view)
+                .view(holder)
                 .bbox(box)
                 .zIndex(10)
                 .with(behaviour)
-                .build();
+                .build());
+    }
+
+    /** Hält die Grafik der Entity auf ganzen Pixeln (sonst verschwimmt sie bei Kommazahl-Positionen). */
+    private static Entity snapped(Node holder, Entity entity) {
+        PixelArt.snapToPixels(entity, holder);
+        return entity;
     }
 
     @Spawns("enemyZapper")
@@ -360,13 +380,17 @@ public class PlatformFactory implements EntityFactory {
     private static Node creditView(String texture, int w, int h, Color glowColor) {
         // Zugeschnittener Chip (siehe tools/generate_sprites.py), etwas breiter als die Hitbox, vertikal zentriert
         String chipFile = texture.replace(".png", "_chip.png");
-        ImageView chip = new ImageView(FXGL.getAssetLoader().loadImage(chipFile));
-        chip.setPreserveRatio(true);
-        chip.setSmooth(true);
-        chip.setFitWidth(w * 1.25);
-        chip.setLayoutX(-w * 0.125);
-        double shownHeight = chip.getImage().getHeight() * (w * 1.25 / chip.getImage().getWidth());
-        chip.setLayoutY((h - shownHeight) / 2);
+        // Einmal beim Laden hochwertig auf FACTOR × Anzeigegröße verkleinern → JavaFX muss danach kaum noch skalieren
+        int shownWidth = (int) Math.round(w * 1.25);
+        Image img = CHIP_CACHE.computeIfAbsent(chipFile + "@" + shownWidth, key -> new Image(
+                PlatformFactory.class.getResourceAsStream("/assets/textures/" + chipFile),
+                shownWidth * PixelArt.FACTOR, 0, true, true));
+        double shownHeight = Math.round(img.getHeight() / PixelArt.FACTOR);
+        ImageView chip = new ImageView(img);
+        chip.setFitWidth(shownWidth);
+        chip.setFitHeight(shownHeight);
+        chip.setLayoutX(Math.round((w - shownWidth) / 2.0));
+        chip.setLayoutY(Math.round((h - shownHeight) / 2));
 
         DropShadow glow = new DropShadow(18, glowColor);
         glow.setSpread(0.25);
